@@ -232,6 +232,15 @@ export default function ProfilePage() {
 
                 <div className="space-y-4">
                   <Button
+                    variant="default"
+                    className="w-full"
+                    onClick={() => router.push('/natal-chart')}
+                  >
+                    <Sparkles className="mr-2 size-4" />
+                    Doğum Haritamı Gör
+                  </Button>
+                  
+                  <Button
                     variant="outline"
                     className="w-full"
                     onClick={() => {

@@ -45,6 +45,9 @@ export function Header() {
               <Link href="/zodiac" className="text-sm font-medium transition-colors hover:text-primary">
                 Burçlar
               </Link>
+              <Link href="/natal-chart" className="text-sm font-medium transition-colors hover:text-primary">
+                Doğum Haritam
+              </Link>
             </>
           )}
         </nav>
