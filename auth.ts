@@ -16,10 +16,13 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   },
   callbacks: {
     async session({ session, user }) {
-      if (session.user) {
+      if (session.user && user) {
         session.user.id = user.id
-        // @ts-ignore - role field'ı ekle
-        session.user.role = user.role
+        // @ts-ignore - Ek alanları ekle
+        session.user.role = (user as any).role || 'USER'
+        session.user.birthDate = (user as any).birthDate
+        session.user.zodiacSign = (user as any).zodiacSign
+        session.user.createdAt = (user as any).createdAt
       }
       return session
     },
