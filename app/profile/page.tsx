@@ -207,7 +207,14 @@ export default function ProfilePage() {
                     className="w-full"
                     onClick={() => {
                       if (session.user.birthDate) {
-                        setBirthDate(new Date(session.user.birthDate).toISOString().split('T')[0])
+                        // DD.MM.YYYY formatında göster
+                        const date = new Date(session.user.birthDate)
+                        const day = String(date.getDate()).padStart(2, '0')
+                        const month = String(date.getMonth() + 1).padStart(2, '0')
+                        const year = date.getFullYear()
+                        setBirthDate(`${day}.${month}.${year}`)
+                      } else {
+                        setBirthDate("")
                       }
                     }}
                   >
@@ -215,22 +222,47 @@ export default function ProfilePage() {
                     Doğum Tarihini Güncelle
                   </Button>
 
-                  {birthDate && (
+                  {birthDate !== null && birthDate !== undefined && (
                     <form onSubmit={handleUpdateZodiac} className="space-y-4">
                       <div className="space-y-2">
                         <label htmlFor="birthDate" className="text-sm font-medium">
                           Yeni Doğum Tarihi
                         </label>
-                        <Input
-                          id="birthDate"
-                          type="text"
-                          placeholder="GG.AA.YYYY (örn: 02.06.2001)"
-                          value={birthDate}
-                          onChange={(e) => setBirthDate(e.target.value)}
-                          required
-                        />
+                        <div className="flex gap-2">
+                          <Input
+                            id="birthDate"
+                            type="date"
+                            value={birthDate ? (() => {
+                              const parts = birthDate.split('.')
+                              if (parts.length === 3) {
+                                const [day, month, year] = parts
+                                return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+                              }
+                              return birthDate
+                            })() : ''}
+                            onChange={(e) => {
+                              // YYYY-MM-DD -> DD.MM.YYYY
+                              const isoDate = e.target.value
+                              if (isoDate) {
+                                const [year, month, day] = isoDate.split('-')
+                                setBirthDate(`${day}.${month}.${year}`)
+                              } else {
+                                setBirthDate('')
+                              }
+                            }}
+                            className="flex-1"
+                            max={new Date().toISOString().split('T')[0]}
+                          />
+                          <Input
+                            type="text"
+                            placeholder="veya GG.AA.YYYY"
+                            value={birthDate}
+                            onChange={(e) => setBirthDate(e.target.value)}
+                            className="flex-1"
+                          />
+                        </div>
                         <p className="text-xs text-muted-foreground">
-                          Doğum tarihinizi GG.AA.YYYY formatında girin (örn: 02.06.2001)
+                          Tarih seçici kullanın veya manuel olarak GG.AA.YYYY formatında girin (örn: 02.06.2001)
                         </p>
                       </div>
 

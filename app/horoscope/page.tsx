@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { ZodiacSelector } from "@/components/horoscope/zodiac-selector"
@@ -23,20 +23,7 @@ export default function HoroscopePage() {
   const [compatibility, setCompatibility] = useState<string>("")
   const [loading, setLoading] = useState(false)
 
-  if (status === "loading") {
-    return (
-      <div className="container flex min-h-[calc(100vh-4rem)] items-center justify-center">
-        <Loader2 className="size-8 animate-spin text-primary" />
-      </div>
-    )
-  }
-
-  if (!session) {
-    router.push("/login")
-    return null
-  }
-
-  const handleGetDailyReading = async () => {
+  const handleGetDailyReading = useCallback(async () => {
     if (!selectedSign) return
 
     setLoading(true)
@@ -58,9 +45,9 @@ export default function HoroscopePage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [selectedSign])
 
-  const handleGetWeeklyReading = async () => {
+  const handleGetWeeklyReading = useCallback(async () => {
     if (!selectedSign) return
 
     setLoading(true)
@@ -82,9 +69,9 @@ export default function HoroscopePage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [selectedSign])
 
-  const handleGetMonthlyReading = async () => {
+  const handleGetMonthlyReading = useCallback(async () => {
     if (!selectedSign) return
 
     setLoading(true)
@@ -106,9 +93,9 @@ export default function HoroscopePage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [selectedSign])
 
-  const handleGetCompatibility = async () => {
+  const handleGetCompatibility = useCallback(async () => {
     if (!selectedSign || !selectedSign2) return
 
     setLoading(true)
@@ -130,6 +117,19 @@ export default function HoroscopePage() {
     } finally {
       setLoading(false)
     }
+  }, [selectedSign, selectedSign2])
+
+  if (status === "loading") {
+    return (
+      <div className="container flex min-h-[calc(100vh-4rem)] items-center justify-center">
+        <Loader2 className="size-8 animate-spin text-primary" />
+      </div>
+    )
+  }
+
+  if (!session) {
+    router.push("/login")
+    return null
   }
 
   return (

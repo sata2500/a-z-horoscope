@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -40,12 +40,7 @@ export function ReadingHistory() {
   const [zodiacFilter, setZodiacFilter] = useState<string>("all")
   const [typeFilter, setTypeFilter] = useState<string>("all")
 
-  useEffect(() => {
-    fetchReadings()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, zodiacFilter, typeFilter])
-
-  const fetchReadings = async () => {
+  const fetchReadings = useCallback(async () => {
     setLoading(true)
     try {
       const params = new URLSearchParams({
@@ -73,7 +68,11 @@ export function ReadingHistory() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [currentPage, zodiacFilter, typeFilter])
+
+  useEffect(() => {
+    fetchReadings()
+  }, [fetchReadings])
 
   const getReadingTypeLabel = (type: string) => {
     const labels: Record<string, string> = {
