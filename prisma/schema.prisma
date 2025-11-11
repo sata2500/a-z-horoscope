@@ -65,6 +65,7 @@ model User {
   sessions         Session[]
   horoscopeReadings HoroscopeReading[]
   favoriteReadings  FavoriteReading[]
+  journalEntries   JournalEntry[]
 
   @@map("users")
 }
@@ -107,4 +108,25 @@ model FavoriteReading {
   @@unique([userId, readingId])
   @@index([userId])
   @@map("favorite_readings")
+}
+
+// Journal models
+model JournalEntry {
+  id          String   @id @default(cuid())
+  userId      String   @map("user_id")
+  date        DateTime @default(now())
+  title       String?
+  content     String   @db.Text
+  mood        Int      // 1-10 skala
+  tags        String[] // ["iş", "aşk", "sağlık"]
+  transits    Json?    // { sun: "Akrep 19°", moon: "İkizler 8°", ... }
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([date])
+  @@index([mood])
+  @@map("journal_entries")
 }

@@ -177,3 +177,135 @@ Yorum Türkçe olmalı, samimi ve sıcak bir dille yazılmalı. Yaklaşık 400-4
     throw new Error("Aylık burç yorumu oluşturulamadı")
   }
 }
+
+/**
+ * Günlük içeriğini analiz et
+ */
+export async function analyzeJournalEntry(
+  content: string,
+  mood: number,
+  transits: any
+): Promise<{
+  emotionalTone: string
+  keywords: string[]
+  transitInsights: string
+  suggestions: string[]
+}> {
+  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" })
+
+  const transitsText = transits 
+    ? Object.entries(transits).map(([planet, position]) => `${planet}: ${position}`).join(', ')
+    : 'Transit bilgisi yok'
+
+  const prompt = `Sen profesyonel bir astrolog ve psikoloğun. Aşağıdaki günlük girişini analiz et ve kullanıcıya içgörüler sun.
+
+Günlük İçeriği:
+${content}
+
+Ruh Hali Skoru: ${mood}/10
+
+O Günün Gezegen Pozisyonları:
+${transitsText}
+
+Lütfen şu formatta bir JSON yanıtı döndür:
+{
+  "emotionalTone": "Pozitif/Nötr/Negatif",
+  "keywords": ["anahtar kelime 1", "anahtar kelime 2", "anahtar kelime 3"],
+  "transitInsights": "Gezegen pozisyonlarının bu günlük üzerindeki olası etkisi hakkında 2-3 cümlelik analiz",
+  "suggestions": ["öneri 1", "öneri 2", "öneri 3"]
+}
+
+Analiz Türkçe olmalı, empatik ve yapıcı olmalı.`
+
+  try {
+    const result = await model.generateContent(prompt)
+    const response = result.response.text()
+    
+    // JSON yanıtını parse et
+    const jsonMatch = response.match(/\{[\s\S]*\}/)
+    if (jsonMatch) {
+      return JSON.parse(jsonMatch[0])
+    }
+    
+    // Fallback
+    return {
+      emotionalTone: mood >= 7 ? "Pozitif" : mood >= 4 ? "Nötr" : "Negatif",
+      keywords: [],
+      transitInsights: "Analiz yapılamadı",
+      suggestions: ["Günlüğünüzü yazmaya devam edin"],
+    }
+  } catch (error) {
+    console.error("Günlük analizi hatası:", error)
+    throw new Error("Günlük analizi oluşturulamadı")
+  }
+}
+
+/**
+ * Birden fazla günlük girişinde pattern bul
+ */
+export async function findJournalPatterns(
+  entries: Array<{
+    date: Date
+    mood: number
+    content: string
+    transits: any
+  }>
+): Promise<{
+  moodTrend: string
+  transitCorrelations: string[]
+  insights: string[]
+  recommendations: string[]
+}> {
+  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" })
+
+  // Günlükleri özetle
+  const entriesSummary = entries.map((entry, index) => {
+    const transitsText = entry.transits 
+      ? Object.entries(entry.transits).map(([planet, position]) => `${planet}: ${position}`).join(', ')
+      : 'Yok'
+    
+    return `
+Gün ${index + 1} (${entry.date.toLocaleDateString('tr-TR')}):
+- Ruh Hali: ${entry.mood}/10
+- İçerik Özeti: ${entry.content.substring(0, 100)}...
+- Transit'ler: ${transitsText}
+`
+  }).join('\n')
+
+  const prompt = `Sen profesyonel bir astrolog ve psikoloğun. Aşağıdaki günlük girişlerini analiz et ve kullanıcının ruh hali ile gezegen hareketleri arasındaki korelasyonları bul.
+
+Günlük Girişleri:
+${entriesSummary}
+
+Lütfen şu formatta bir JSON yanıtı döndür:
+{
+  "moodTrend": "Ruh halindeki genel eğilim (yükseliyor/düşüyor/stabil)",
+  "transitCorrelations": ["korelasyon 1", "korelasyon 2"],
+  "insights": ["içgörü 1", "içgörü 2", "içgörü 3"],
+  "recommendations": ["öneri 1", "öneri 2", "öneri 3"]
+}
+
+Analiz Türkçe olmalı, empatik ve yapıcı olmalı. Gezegen hareketleri ile ruh hali değişimleri arasındaki bağlantıları vurgula.`
+
+  try {
+    const result = await model.generateContent(prompt)
+    const response = result.response.text()
+    
+    // JSON yanıtını parse et
+    const jsonMatch = response.match(/\{[\s\S]*\}/)
+    if (jsonMatch) {
+      return JSON.parse(jsonMatch[0])
+    }
+    
+    // Fallback
+    return {
+      moodTrend: "Analiz için yeterli veri yok",
+      transitCorrelations: [],
+      insights: ["Daha fazla günlük yazarak pattern'leri keşfedebilirsiniz"],
+      recommendations: ["Düzenli günlük tutmaya devam edin"],
+    }
+  } catch (error) {
+    console.error("Pattern analizi hatası:", error)
+    throw new Error("Pattern analizi oluşturulamadı")
+  }
+}

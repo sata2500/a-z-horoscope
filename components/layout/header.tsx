@@ -48,6 +48,9 @@ export function Header() {
               <Link href="/natal-chart" className="text-sm font-medium transition-colors hover:text-primary">
                 Doğum Haritam
               </Link>
+              <Link href="/journal" className="text-sm font-medium transition-colors hover:text-primary">
+                Günlüğüm
+              </Link>
             </>
           )}
         </nav>
@@ -80,6 +83,9 @@ export function Header() {
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/dashboard">Dashboard</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/journal">Günlüğüm</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/" })}>
