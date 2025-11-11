@@ -1,19 +1,75 @@
-import { auth } from "@/auth"
-import { redirect } from "next/navigation"
+"use client"
+
+import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { zodiacSigns } from "@/lib/zodiac"
+import { Loader2, Calendar, Sparkles } from "lucide-react"
 
-export default async function ProfilePage() {
-  const session = await auth()
+export default function ProfilePage() {
+  const { data: session, status, update } = useSession()
+  const router = useRouter()
+  const [birthDate, setBirthDate] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
 
-  if (!session?.user) {
-    redirect("/login")
+  if (status === "loading") {
+    return (
+      <div className="container flex min-h-[calc(100vh-4rem)] items-center justify-center">
+        <Loader2 className="size-8 animate-spin text-primary" />
+      </div>
+    )
+  }
+
+  if (!session) {
+    router.push("/login")
+    return null
   }
 
   const userZodiac = session.user.zodiacSign 
     ? zodiacSigns[session.user.zodiacSign as keyof typeof zodiacSigns]
     : null
+
+  const handleUpdateZodiac = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError("")
+    setLoading(true)
+
+    try {
+      const response = await fetch("/api/user/update-zodiac", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ birthDate: new Date(birthDate).toISOString() }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        // Session'ı güncelle
+        await update({
+          ...session,
+          user: {
+            ...session.user,
+            birthDate: data.birthDate,
+            zodiacSign: data.zodiacSign,
+          },
+        })
+        
+        // Sayfayı yenile
+        window.location.reload()
+      } else {
+        setError(data.error || "Bir hata oluştu")
+      }
+    } catch {
+      setError("Bağlantı hatası")
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="container py-12">
@@ -25,6 +81,7 @@ export default async function ProfilePage() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
+        {/* Hesap Bilgileri */}
         <Card>
           <CardHeader>
             <CardTitle>Hesap Bilgileri</CardTitle>
@@ -63,11 +120,12 @@ export default async function ProfilePage() {
           </CardContent>
         </Card>
 
+        {/* Burç Bilgileri */}
         <Card>
           <CardHeader>
             <CardTitle>Burç Bilgilerim</CardTitle>
             <CardDescription>
-              {userZodiac ? "Burç bilgileriniz" : "Henüz burç bilgisi eklenmemiş"}
+              {userZodiac ? "Burç bilgileriniz" : "Doğum tarihinizi girerek burcunuzu öğrenin"}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -82,6 +140,11 @@ export default async function ProfilePage() {
                     <p className="text-sm text-muted-foreground">
                       {userZodiac.dateRangeTr}
                     </p>
+                    {session.user.birthDate && (
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Doğum: {new Date(session.user.birthDate).toLocaleDateString('tr-TR')}
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -119,12 +182,63 @@ export default async function ProfilePage() {
                     ))}
                   </div>
                 </div>
+
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => {
+                    if (session.user.birthDate) {
+                      setBirthDate(new Date(session.user.birthDate).toISOString().split('T')[0])
+                    }
+                  }}
+                >
+                  <Calendar className="mr-2 size-4" />
+                  Doğum Tarihini Güncelle
+                </Button>
               </div>
             ) : (
-              <div className="text-center text-muted-foreground">
-                <p className="mb-4">Burç bilgilerinizi eklemek için doğum tarihinizi belirtin</p>
-                <p className="text-sm">Bu özellik yakında eklenecek...</p>
-              </div>
+              <form onSubmit={handleUpdateZodiac} className="space-y-4">
+                <div className="space-y-2">
+                  <label htmlFor="birthDate" className="text-sm font-medium">
+                    Doğum Tarihiniz
+                  </label>
+                  <Input
+                    id="birthDate"
+                    type="date"
+                    value={birthDate}
+                    onChange={(e) => setBirthDate(e.target.value)}
+                    required
+                    max={new Date().toISOString().split('T')[0]}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Doğum tarihinizi girerek burcunuz otomatik olarak hesaplanacak
+                  </p>
+                </div>
+
+                {error && (
+                  <div className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">
+                    {error}
+                  </div>
+                )}
+
+                <Button
+                  type="submit"
+                  disabled={loading || !birthDate}
+                  className="w-full"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="mr-2 size-4 animate-spin" />
+                      Kaydediliyor...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="mr-2 size-4" />
+                      Burcumu Hesapla ve Kaydet
+                    </>
+                  )}
+                </Button>
+              </form>
             )}
           </CardContent>
         </Card>
