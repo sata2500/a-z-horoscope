@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Sparkles, Stars, Heart, TrendingUp } from "lucide-react"
 
 export default function HomePage() {
@@ -22,7 +22,7 @@ export default function HomePage() {
             </h1>
             <p className="mb-8 text-lg text-muted-foreground md:text-xl">
               Gemini AI destekli kişiselleştirilmiş burç yorumları ve analizleri ile geleceğinizi keşfedin.
-              Modern teknoloji ile kadim bilgeliği birleştiren Az-Horoscope'a hoş geldiniz.
+              Modern teknoloji ile kadim bilgeliği birleştiren Az-Horoscope&apos;a hoş geldiniz.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
               <Button size="lg" asChild>

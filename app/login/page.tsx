@@ -13,7 +13,7 @@ export default function LoginPage() {
           <div className="mb-4 flex justify-center">
             <Sparkles className="size-12 text-primary" />
           </div>
-          <CardTitle className="text-2xl">Az-Horoscope'a Hoş Geldiniz</CardTitle>
+          <CardTitle className="text-2xl">Az-Horoscope&apos;a Hoş Geldiniz</CardTitle>
           <CardDescription>
             Kişiselleştirilmiş burç yorumlarınıza erişmek için giriş yapın
           </CardDescription>
@@ -55,7 +55,7 @@ export default function LoginPage() {
               <a href="/terms" className="underline hover:text-primary">
                 Kullanım Koşulları
               </a>
-              'nı kabul etmiş olursunuz.
+&apos;nı kabul etmiş olursunuz.
             </p>
           </div>
         </CardContent>

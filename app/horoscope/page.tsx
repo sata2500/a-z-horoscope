@@ -49,7 +49,7 @@ export default function HoroscopePage() {
       } else {
         alert("Burç yorumu alınamadı: " + data.error)
       }
-    } catch (error) {
+    } catch {
       alert("Bir hata oluştu")
     } finally {
       setLoading(false)
@@ -73,7 +73,7 @@ export default function HoroscopePage() {
       } else {
         alert("Uyumluluk analizi alınamadı: " + data.error)
       }
-    } catch (error) {
+    } catch {
       alert("Bir hata oluştu")
     } finally {
       setLoading(false)

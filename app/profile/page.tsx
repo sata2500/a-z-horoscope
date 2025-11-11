@@ -50,7 +50,7 @@ export default async function ProfilePage() {
               <div className="flex justify-between border-b pb-2">
                 <span className="text-sm font-medium">Üyelik Tarihi</span>
                 <span className="text-sm text-muted-foreground">
-                  {new Date(session.user.createdAt || Date.now()).toLocaleDateString('tr-TR')}
+                  {session.user.createdAt ? new Date(session.user.createdAt).toLocaleDateString('tr-TR') : 'Bilinmiyor'}
                 </span>
               </div>
               <div className="flex justify-between border-b pb-2">

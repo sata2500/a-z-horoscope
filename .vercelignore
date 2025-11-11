@@ -1,0 +1,11 @@
+# Analysis files
+PROJE_ANALIZ.md
+GELISTIRME_PLANI.md
+PROJE_RAPORU.md
+
+# Build logs
+build.log
+
+# Local env files
+.env.local
+.env*.local
