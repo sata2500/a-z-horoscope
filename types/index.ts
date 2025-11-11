@@ -1,0 +1,11 @@
+import { User } from "@prisma/client"
+
+declare module "next-auth" {
+  interface Session {
+    user: User & {
+      id: string
+    }
+  }
+}
+
+export type ReadingType = "daily" | "weekly" | "monthly" | "compatibility"
