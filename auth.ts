@@ -18,6 +18,8 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     async session({ session, user }) {
       if (session.user) {
         session.user.id = user.id
+        // @ts-ignore - role field'ı ekle
+        session.user.role = user.role
       }
       return session
     },

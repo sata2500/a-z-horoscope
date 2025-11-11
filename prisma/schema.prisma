@@ -10,6 +10,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Enums
+enum UserRole {
+  USER
+  ADMIN
+}
+
 // Auth.js models
 model Account {
   id                String  @id @default(cuid())
@@ -47,10 +53,13 @@ model User {
   email         String?   @unique
   emailVerified DateTime? @map("email_verified")
   image         String?
-  birthDate     DateTime? @map("birth_date")
-  zodiacSign    String?   @map("zodiac_sign")
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime  @updatedAt @map("updated_at")
+  birthDate               DateTime? @map("birth_date")
+  zodiacSign              String?   @map("zodiac_sign")
+  emailNotifications      Boolean   @default(false) @map("email_notifications")
+  notificationPreferences Json?     @default("{\"daily\": true, \"weekly\": false, \"monthly\": false}") @map("notification_preferences")
+  role                    UserRole  @default(USER)
+  createdAt               DateTime  @default(now()) @map("created_at")
+  updatedAt               DateTime  @updatedAt @map("updated_at")
 
   accounts         Account[]
   sessions         Session[]

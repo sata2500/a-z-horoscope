@@ -2,13 +2,16 @@
 
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { zodiacSigns } from "@/lib/zodiac"
-import { Loader2, Calendar, Sparkles } from "lucide-react"
+import { Loader2, Calendar, Sparkles, Bell, Mail } from "lucide-react"
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
 
 export default function ProfilePage() {
   const { data: session, status, update } = useSession()
@@ -16,6 +19,32 @@ export default function ProfilePage() {
   const [birthDate, setBirthDate] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  
+  // Bildirim tercihleri state'leri
+  const [emailNotifications, setEmailNotifications] = useState(false)
+  const [notificationPreferences, setNotificationPreferences] = useState({
+    daily: true,
+    weekly: false,
+    monthly: false,
+  })
+  const [notificationLoading, setNotificationLoading] = useState(false)
+  const [notificationError, setNotificationError] = useState("")
+  const [notificationSuccess, setNotificationSuccess] = useState(false)
+
+  // Bildirim tercihlerini yükle
+  useEffect(() => {
+    if (session?.user?.email) {
+      fetch('/api/user/notification-settings')
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            setEmailNotifications(data.emailNotifications)
+            setNotificationPreferences(data.preferences)
+          }
+        })
+        .catch(err => console.error('Bildirim tercihleri yüklenemedi:', err))
+    }
+  }, [session?.user?.email])
 
   if (status === "loading") {
     return (
@@ -338,6 +367,156 @@ export default function ProfilePage() {
                 </Button>
               </form>
             )}
+          </CardContent>
+        </Card>
+        {/* E-posta Bildirimleri */}
+        <Card className="md:col-span-2">
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <Bell className="size-5" />
+              <CardTitle>E-posta Bildirimleri</CardTitle>
+            </div>
+            <CardDescription>
+              Günlük, haftalık veya aylık burç yorumlarınızı e-posta ile alın
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Ana Toggle */}
+            <div className="flex items-center justify-between rounded-lg border p-4">
+              <div className="flex items-center gap-3">
+                <Mail className="size-5 text-muted-foreground" />
+                <div>
+                  <Label htmlFor="email-notifications" className="text-base font-medium">
+                    E-posta Bildirimleri
+                  </Label>
+                  <p className="text-sm text-muted-foreground">
+                    Burç yorumlarınızı e-posta ile alın
+                  </p>
+                </div>
+              </div>
+              <Switch
+                id="email-notifications"
+                checked={emailNotifications}
+                onCheckedChange={setEmailNotifications}
+                disabled={notificationLoading}
+              />
+            </div>
+
+            {/* Bildirim Sıklığı */}
+            {emailNotifications && (
+              <div className="space-y-4 rounded-lg border p-4">
+                <h4 className="text-sm font-semibold">Bildirim Sıklığı</h4>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3">
+                    <Checkbox
+                      id="daily"
+                      checked={notificationPreferences.daily}
+                      onCheckedChange={(checked) =>
+                        setNotificationPreferences(prev => ({ ...prev, daily: checked as boolean }))
+                      }
+                      disabled={notificationLoading}
+                    />
+                    <Label htmlFor="daily" className="text-sm font-normal cursor-pointer">
+                      <span className="font-medium">Günlük</span> - Her gün sabah burç yorumunuzu alın
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Checkbox
+                      id="weekly"
+                      checked={notificationPreferences.weekly}
+                      onCheckedChange={(checked) =>
+                        setNotificationPreferences(prev => ({ ...prev, weekly: checked as boolean }))
+                      }
+                      disabled={notificationLoading}
+                    />
+                    <Label htmlFor="weekly" className="text-sm font-normal cursor-pointer">
+                      <span className="font-medium">Haftalık</span> - Her hafta başı haftalık yorumunuzu alın
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Checkbox
+                      id="monthly"
+                      checked={notificationPreferences.monthly}
+                      onCheckedChange={(checked) =>
+                        setNotificationPreferences(prev => ({ ...prev, monthly: checked as boolean }))
+                      }
+                      disabled={notificationLoading}
+                    />
+                    <Label htmlFor="monthly" className="text-sm font-normal cursor-pointer">
+                      <span className="font-medium">Aylık</span> - Her ay başı aylık yorumunuzu alın
+                    </Label>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Hata ve Başarı Mesajları */}
+            {notificationError && (
+              <div className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">
+                {notificationError}
+              </div>
+            )}
+            {notificationSuccess && (
+              <div className="rounded-lg bg-green-500/10 p-3 text-sm text-green-600 dark:text-green-400">
+                ✓ Bildirim tercihleri başarıyla güncellendi
+              </div>
+            )}
+
+            {/* Kaydet Butonu */}
+            <Button
+              onClick={async () => {
+                setNotificationError("")
+                setNotificationSuccess(false)
+                setNotificationLoading(true)
+
+                try {
+                  const response = await fetch('/api/user/notification-settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      emailNotifications,
+                      preferences: notificationPreferences,
+                    }),
+                  })
+
+                  const data = await response.json()
+
+                  if (response.ok) {
+                    setNotificationSuccess(true)
+                    setTimeout(() => setNotificationSuccess(false), 3000)
+                  } else {
+                    setNotificationError(data.error || 'Bir hata oluştu')
+                  }
+                } catch {
+                  setNotificationError('Bağlantı hatası')
+                } finally {
+                  setNotificationLoading(false)
+                }
+              }}
+              disabled={notificationLoading}
+              className="w-full"
+            >
+              {notificationLoading ? (
+                <>
+                  <Loader2 className="mr-2 size-4 animate-spin" />
+                  Kaydediliyor...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="mr-2 size-4" />
+                  Bildirim Tercihlerini Kaydet
+                </>
+              )}
+            </Button>
+
+            {/* Bilgi Notu */}
+            <div className="rounded-lg bg-muted p-4">
+              <p className="text-xs text-muted-foreground">
+                💡 <strong>Not:</strong> E-posta bildirimleri şu anda geliştirme aşamasındadır. 
+                Bildirimleri etkinleştirdiğinizde, tercihleriniz kaydedilecek ve sistem hazır olduğunda 
+                otomatik olarak e-posta almaya başlayacaksınız.
+              </p>
+            </div>
           </CardContent>
         </Card>
       </div>
