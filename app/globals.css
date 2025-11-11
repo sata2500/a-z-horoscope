@@ -79,3 +79,20 @@ body {
   color: var(--foreground);
   font-feature-settings: "rlig" 1, "calt" 1;
 }
+
+
+/* Container improvements for better spacing */
+.container {
+  @apply px-4 sm:px-6 lg:px-8;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Ensure content doesn't stick to edges on mobile */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}

@@ -285,3 +285,170 @@ _Henüz yok_
 
 **Son Güncelleme:** 11 Kasım 2025  
 **Durum:** Planlama Tamamlandı - Geliştirme Başlıyor
+
+
+---
+
+### 🔮 Faz 4: Profesyonel Astroloji Özellikleri (8-9. Özellikler)
+
+#### Özellik 8: Swiss Ephemeris Entegrasyonu
+**Öncelik:** YÜKSEK  
+**Süre:** ~4 saat  
+**Açıklama:** Profesyonel astroloji hesaplamaları için Swiss Ephemeris kütüphanesi entegrasyonu.
+
+**Yapılacaklar:**
+- [ ] `sweph` kütüphanesini yükle ve yapılandır
+- [ ] Ephemeris dosyalarını indir ve public klasörüne ekle
+- [ ] Doğum haritası (natal chart) hesaplama fonksiyonu
+- [ ] Gezegen pozisyonları hesaplama
+- [ ] Yükselen burç (Ascendant) hesaplama
+- [ ] Evler (Houses) hesaplama
+- [ ] API endpoint: `POST /api/astrology/natal-chart`
+- [ ] API endpoint: `POST /api/astrology/transit`
+- [ ] Gemini AI ile Swiss Ephemeris verilerini birleştir
+- [ ] Profil sayfasına doğum haritası bölümü ekle
+- [ ] Test ve commit
+
+**Dosyalar:**
+- `package.json` (sweph ekle)
+- `lib/swisseph.ts` (yeni - Swiss Ephemeris wrapper)
+- `app/api/astrology/natal-chart/route.ts` (yeni)
+- `app/api/astrology/transit/route.ts` (yeni)
+- `lib/gemini.ts` (güncelle - Swiss Ephemeris verilerini kullan)
+- `app/profile/page.tsx` (güncelle - doğum haritası bölümü)
+- `components/astrology/natal-chart.tsx` (yeni)
+- `public/ephemeris/` (ephemeris dosyaları)
+
+**Özellikler:**
+- ✅ Gerçek astronomik verilerle burç hesaplamaları
+- ✅ Doğum haritası (natal chart) görselleştirme
+- ✅ Transit hesaplamaları (günlük gezegen hareketleri)
+- ✅ Yükselen burç ve evler
+- ✅ Ay düğümleri, Chiron, Lilith
+- ✅ Gemini AI ile profesyonel yorumlama
+
+---
+
+#### Özellik 9: Günlük (Journal) Sistemi
+**Öncelik:** ORTA  
+**Süre:** ~3 saat  
+**Açıklama:** Kullanıcıların günlük tutması ve astrolojik verilerle birleştirilmesi.
+
+**Yapılacaklar:**
+- [ ] Prisma schema: `JournalEntry` modeli ekle
+- [ ] Migration oluştur ve uygula
+- [ ] API endpoint: `POST /api/journal/create`
+- [ ] API endpoint: `GET /api/journal/list`
+- [ ] API endpoint: `GET /api/journal/:id`
+- [ ] API endpoint: `PUT /api/journal/:id`
+- [ ] API endpoint: `DELETE /api/journal/:id`
+- [ ] Günlük yazma sayfası (`/journal/new`)
+- [ ] Günlük listesi sayfası (`/journal`)
+- [ ] Günlük detay sayfası (`/journal/[id]`)
+- [ ] Ruh hali seçici (mood selector)
+- [ ] Etiket (tags) sistemi
+- [ ] Swiss Ephemeris ile o günün transit'lerini hesapla
+- [ ] Gemini AI ile günlük + transit analizi
+- [ ] Takvim görünümü (calendar view)
+- [ ] Test ve commit
+
+**Dosyalar:**
+- `prisma/schema.prisma` (JournalEntry modeli ekle)
+- `app/api/journal/create/route.ts` (yeni)
+- `app/api/journal/list/route.ts` (yeni)
+- `app/api/journal/[id]/route.ts` (yeni)
+- `app/journal/page.tsx` (yeni - liste)
+- `app/journal/new/page.tsx` (yeni - yeni günlük)
+- `app/journal/[id]/page.tsx` (yeni - detay)
+- `components/journal/entry-form.tsx` (yeni)
+- `components/journal/entry-card.tsx` (yeni)
+- `components/journal/mood-selector.tsx` (yeni)
+- `components/journal/calendar-view.tsx` (yeni)
+
+**Prisma Schema:**
+```prisma
+model JournalEntry {
+  id          String   @id @default(cuid())
+  userId      String   @map("user_id")
+  date        DateTime
+  content     String   @db.Text
+  mood        String?  // "happy", "sad", "anxious", "calm", "energetic"
+  tags        String[] // ["work", "relationship", "health", "family"]
+  
+  // Astrolojik veriler (o günün transit'leri)
+  sunSign     String?   @map("sun_sign")
+  moonSign    String?   @map("moon_sign")
+  risingSign  String?   @map("rising_sign")
+  transitData Json?     @map("transit_data") // Swiss Ephemeris verileri
+  
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId, date])
+  @@map("journal_entries")
+}
+```
+
+**Özellikler:**
+- ✅ Günlük yazma ve düzenleme
+- ✅ Ruh hali takibi (mood tracking)
+- ✅ Etiket sistemi (tags)
+- ✅ O günün transit'leri otomatik kaydedilir
+- ✅ Gemini AI ile günlük + astroloji analizi
+- ✅ Takvim görünümü
+- ✅ Arama ve filtreleme
+- ✅ İstatistikler (en çok hangi ruh halinde, vb.)
+
+**AI Analiz Örneği:**
+```
+Kullanıcının günlüğü: "Bugün çok gergin ve huzursuzdum. İşte tartışma yaşadım."
+Bugünün transit'leri:
+- Ay: Koç 15° (Aries)
+- Mars: Aslan 22° (Leo) - Ay ile kare açı
+- Merkür: Retrograde (Başak/Virgo)
+
+Gemini AI Analizi:
+"Bugün Ay Koç burcunda olduğu için duygusal olarak daha tetiklenmiş 
+olabilirsiniz. Mars'ın Ay ile kare açı yapması, gerginlik ve çatışma 
+potansiyelini artırıyor. Merkür retrograde döneminde olduğu için 
+iletişimde yanlış anlaşılmalar yaşanabilir. Bugünkü gerginliğiniz 
+tamamen doğal ve astrolojik etkilerle açıklanabilir..."
+```
+
+---
+
+## 📊 Güncellenmiş Geliştirme Takvimi
+
+| Özellik | Öncelik | Süre | Durum |
+|---------|---------|------|-------|
+| 1. Profil - Burç Seçimi | 🟢 YÜKSEK | 30 dk | ✅ Tamamlandı |
+| 2. Geçmiş Yorumlar | 🟢 YÜKSEK | 45 dk | ⏳ Bekliyor |
+| 3. Haftalık/Aylık Yorumlar | 🟡 ORTA | 1 saat | ⏳ Bekliyor |
+| 4. Favori ve Paylaşım | 🟡 ORTA | 1 saat | ⏳ Bekliyor |
+| 5. Burç Detay Sayfaları | 🟡 ORTA | 1.5 saat | ⏳ Bekliyor |
+| 6. E-posta Bildirimleri | 🔵 DÜŞÜK | 2 saat | ⏳ Bekliyor |
+| 7. Admin Paneli | 🔵 DÜŞÜK | 3 saat | ⏳ Bekliyor |
+| **8. Swiss Ephemeris** | 🟢 **YÜKSEK** | **4 saat** | ⏳ **Bekliyor** |
+| **9. Günlük (Journal)** | 🟡 **ORTA** | **3 saat** | ⏳ **Bekliyor** |
+
+**Toplam Tahmini Süre:** ~16.75 saat (9 özellik)
+
+---
+
+## 🔄 Güncellemeler
+
+### ✅ Tamamlanan Özellikler
+- **Özellik 1:** Profil Sayfasında Burç Seçimi ve Kaydetme (11 Kasım 2025)
+
+### 🚧 Devam Eden
+_Henüz yok_
+
+### ⏳ Bekleyen
+- Özellik 2-9 (yukarıda listelenmiş)
+
+---
+
+**Son Güncelleme:** 11 Kasım 2025 (Swiss Ephemeris ve Journal eklendi)  
+**Durum:** Özellik 1 Tamamlandı - Düzeltmeler Yapılıyor

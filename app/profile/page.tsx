@@ -183,18 +183,72 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                <Button
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => {
-                    if (session.user.birthDate) {
-                      setBirthDate(new Date(session.user.birthDate).toISOString().split('T')[0])
-                    }
-                  }}
-                >
-                  <Calendar className="mr-2 size-4" />
-                  Doğum Tarihini Güncelle
-                </Button>
+                <div className="space-y-4">
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => {
+                      if (session.user.birthDate) {
+                        setBirthDate(new Date(session.user.birthDate).toISOString().split('T')[0])
+                      }
+                    }}
+                  >
+                    <Calendar className="mr-2 size-4" />
+                    Doğum Tarihini Güncelle
+                  </Button>
+
+                  {birthDate && (
+                    <form onSubmit={handleUpdateZodiac} className="space-y-4">
+                      <div className="space-y-2">
+                        <label htmlFor="birthDate" className="text-sm font-medium">
+                          Yeni Doğum Tarihi
+                        </label>
+                        <Input
+                          id="birthDate"
+                          type="date"
+                          value={birthDate}
+                          onChange={(e) => setBirthDate(e.target.value)}
+                          required
+                          max={new Date().toISOString().split('T')[0]}
+                        />
+                      </div>
+
+                      {error && (
+                        <div className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">
+                          {error}
+                        </div>
+                      )}
+
+                      <div className="flex gap-2">
+                        <Button
+                          type="submit"
+                          disabled={loading}
+                          className="flex-1"
+                        >
+                          {loading ? (
+                            <>
+                              <Loader2 className="mr-2 size-4 animate-spin" />
+                              Kaydediliyor...
+                            </>
+                          ) : (
+                            <>
+                              <Sparkles className="mr-2 size-4" />
+                              Kaydet
+                            </>
+                          )}
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => setBirthDate("")}
+                          disabled={loading}
+                        >
+                          İptal
+                        </Button>
+                      </div>
+                    </form>
+                  )}
+                </div>
               </div>
             ) : (
               <form onSubmit={handleUpdateZodiac} className="space-y-4">
