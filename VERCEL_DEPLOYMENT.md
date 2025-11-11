@@ -13,36 +13,31 @@
 
 ### 3. Environment Variables Ekle
 
-Vercel dashboard'da "Environment Variables" bölümüne aşağıdaki değerleri ekleyin:
+Vercel dashboard'da "Environment Variables" bölümüne aşağıdaki değişkenleri ekleyin.
+
+**ÖNEMLİ:** Gerçek değerler için `.env` dosyanıza veya güvenli notlarınıza bakın.
 
 #### Database
 ```
-DATABASE_URL=postgresql://neondb_owner:npg_pEfCKRZj3m0G@ep-lucky-morning-ahgt7ksy-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require
+DATABASE_URL=<your-neon-database-url>
 ```
 
 #### Google Gemini API
 ```
-GOOGLE_API_KEY=AIzaSyA645VUeieOsJ6QXa4iS5UF9tFX5KRDQDc
+GOOGLE_API_KEY=<your-gemini-api-key>
 ```
 
 #### Google OAuth
 ```
-GOOGLE_CLIENT_ID=70300079475-v9gl5i9s7tum3lpqqeaiccjgco6n1gpb.apps.googleusercontent.com
-GOOGLE_CLIENT_SECRET=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
+GOOGLE_CLIENT_ID=<your-google-client-id>
+GOOGLE_CLIENT_SECRET=<your-google-client-secret>
 ```
 
 #### Auth.js
 ```
-AUTH_SECRET=obVFKVADXKoNvjSGSnK2bALQUTaqumWYqXxLqzlbikY=
+AUTH_SECRET=<generate-with-openssl-rand-base64-32>
 NEXTAUTH_URL=https://a-z-horoscope.vercel.app
 AUTH_TRUST_HOST=true
-```
-
-#### Stack Auth (Opsiyonel)
-```
-NEXT_PUBLIC_STACK_PROJECT_ID=50d6046b-c873-46d9-b6b0-a62aed3e7944
-NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY=pck_f0htz6gnv0dcps1feacb36xqkdz65k1h2qkteeczb2he0
-STACK_SECRET_SERVER_KEY=ssk_3hnbpbbt5jkm1q3aqqt6vd2wfjks00hmk74pvwbt9z7y8
 ```
 
 ### 4. Build Settings
@@ -117,13 +112,19 @@ Her GitHub push işlemi otomatik olarak Vercel'de yeni bir deployment tetikler:
 - `main` branch → Production deployment
 - Diğer branch'ler → Preview deployment
 
+## 🔐 Güvenlik Notları
+
+- ⚠️ **ASLA** gerçek API key'leri veya şifreleri GitHub'a yüklemeyin
+- ⚠️ `.env` dosyası `.gitignore`'da olmalı
+- ⚠️ Hassas bilgileri sadece Vercel dashboard'da environment variables olarak ekleyin
+- ⚠️ API key'leri düzenli olarak rotate edin
+
 ## 📝 Notlar
 
 - ✅ Build başarılı (test edildi)
 - ✅ TypeScript hataları yok
 - ✅ ESLint hataları yok
 - ✅ Database migration uygulandı
-- ✅ Tüm environment variables hazır
 - ✅ Production-ready
 
 ## 🎉 Başarılı Deployment Sonrası
