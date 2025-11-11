@@ -40,6 +40,9 @@ export function Header() {
                 Dashboard
               </Link>
               <Link href="/horoscope" className="text-sm font-medium transition-colors hover:text-primary">
+                Burç Yorumları
+              </Link>
+              <Link href="/zodiac" className="text-sm font-medium transition-colors hover:text-primary">
                 Burçlar
               </Link>
             </>

@@ -40,15 +40,12 @@ export const zodiacSigns: Record<ZodiacSign, ZodiacInfo> = {
     symbol: "♈",
     element: "fire",
     elementTr: "Ateş",
-    quality: "cardinal",
     planet: "Mars",
     planetTr: "Mars",
     dateRange: "March 21 - April 19",
     dateRangeTr: "21 Mart - 19 Nisan",
-    traits: {
-      positive: ["Cesur", "Kararlı", "Kendine güvenen", "Heyecanlı", "Lider ruhlu"],
-      negative: ["Sabırsız", "Agresif", "Dürtüsel", "Bencil"],
-    },
+    traits: ["Courageous", "Determined", "Confident", "Enthusiastic"],
+    traitsTr: ["Cesur", "Kararlı", "Kendine Güvenen", "Heyecanlı"],
     color: "#FF6B6B",
     luckyNumber: [1, 9],
   },
@@ -59,15 +56,12 @@ export const zodiacSigns: Record<ZodiacSign, ZodiacInfo> = {
     symbol: "♉",
     element: "earth",
     elementTr: "Toprak",
-    quality: "fixed",
     planet: "Venus",
     planetTr: "Venüs",
     dateRange: "April 20 - May 20",
     dateRangeTr: "20 Nisan - 20 Mayıs",
-    traits: {
-      positive: ["Güvenilir", "Sabırlı", "Pratik", "Sadık", "Sorumlu"],
-      negative: ["İnatçı", "Sahiplenici", "Değişime dirençli"],
-    },
+    traits: ["Reliable", "Patient", "Practical", "Devoted"],
+    traitsTr: ["Güvenilir", "Sabırlı", "Pratik", "Sadık"],
     color: "#4ECDC4",
     luckyNumber: [2, 6],
   },
@@ -78,15 +72,12 @@ export const zodiacSigns: Record<ZodiacSign, ZodiacInfo> = {
     symbol: "♊",
     element: "air",
     elementTr: "Hava",
-    quality: "mutable",
     planet: "Mercury",
     planetTr: "Merkür",
     dateRange: "May 21 - June 20",
     dateRangeTr: "21 Mayıs - 20 Haziran",
-    traits: {
-      positive: ["Zeki", "İletişim yeteneği güçlü", "Uyumlu", "Meraklı"],
-      negative: ["Kararsız", "Tutarsız", "Yüzeysel", "Gergin"],
-    },
+    traits: ["Gentle", "Affectionate", "Curious", "Adaptable"],
+    traitsTr: ["Nazik", "Sevecen", "Meraklı", "Uyumlu"],
     color: "#FFE66D",
     luckyNumber: [5, 7],
   },
@@ -97,16 +88,13 @@ export const zodiacSigns: Record<ZodiacSign, ZodiacInfo> = {
     symbol: "♋",
     element: "water",
     elementTr: "Su",
-    quality: "cardinal",
     planet: "Moon",
     planetTr: "Ay",
     dateRange: "June 21 - July 22",
     dateRangeTr: "21 Haziran - 22 Temmuz",
-    traits: {
-      positive: ["Duygusal", "Koruyucu", "Sezgisel", "Sadık", "Empatik"],
-      negative: ["Aşırı hassas", "Karamsar", "Manipülatif", "Güvensiz"],
-    },
-    color: "#A8DADC",
+    traits: ["Tenacious", "Loyal", "Emotional", "Sympathetic"],
+    traitsTr: ["Azimli", "Sadık", "Duygusal", "Anlayışlı"],
+    color: "#95E1D3",
     luckyNumber: [2, 7],
   },
   leo: {
@@ -116,17 +104,14 @@ export const zodiacSigns: Record<ZodiacSign, ZodiacInfo> = {
     symbol: "♌",
     element: "fire",
     elementTr: "Ateş",
-    quality: "fixed",
     planet: "Sun",
     planetTr: "Güneş",
     dateRange: "July 23 - August 22",
     dateRangeTr: "23 Temmuz - 22 Ağustos",
-    traits: {
-      positive: ["Yaratıcı", "Tutkulu", "Cömert", "Neşeli", "Karizmatik"],
-      negative: ["Kibirli", "İnatçı", "Kendini beğenmiş", "Tembel"],
-    },
-    color: "#F4A261",
-    luckyNumber: [1, 5],
+    traits: ["Creative", "Passionate", "Generous", "Cheerful"],
+    traitsTr: ["Yaratıcı", "Tutkulu", "Cömert", "Neşeli"],
+    color: "#F38181",
+    luckyNumber: [1, 3, 10],
   },
   virgo: {
     sign: "virgo",
@@ -135,17 +120,14 @@ export const zodiacSigns: Record<ZodiacSign, ZodiacInfo> = {
     symbol: "♍",
     element: "earth",
     elementTr: "Toprak",
-    quality: "mutable",
     planet: "Mercury",
     planetTr: "Merkür",
     dateRange: "August 23 - September 22",
     dateRangeTr: "23 Ağustos - 22 Eylül",
-    traits: {
-      positive: ["Analitik", "Çalışkan", "Pratik", "Sadık", "Detaycı"],
-      negative: ["Eleştirel", "Endişeli", "Mükemmeliyetçi", "Muhafazakar"],
-    },
-    color: "#6A994E",
-    luckyNumber: [5, 6],
+    traits: ["Loyal", "Analytical", "Kind", "Hardworking"],
+    traitsTr: ["Sadık", "Analitik", "Nazik", "Çalışkan"],
+    color: "#AA96DA",
+    luckyNumber: [5, 14],
   },
   libra: {
     sign: "libra",
@@ -154,17 +136,14 @@ export const zodiacSigns: Record<ZodiacSign, ZodiacInfo> = {
     symbol: "♎",
     element: "air",
     elementTr: "Hava",
-    quality: "cardinal",
     planet: "Venus",
     planetTr: "Venüs",
     dateRange: "September 23 - October 22",
     dateRangeTr: "23 Eylül - 22 Ekim",
-    traits: {
-      positive: ["Diplomatik", "Adil", "Sosyal", "İdealist", "Barışçıl"],
-      negative: ["Kararsız", "Yüzeysel", "Çekingen", "Kendinden şüpheli"],
-    },
-    color: "#E76F51",
-    luckyNumber: [4, 6],
+    traits: ["Cooperative", "Diplomatic", "Gracious", "Fair-minded"],
+    traitsTr: ["İşbirlikçi", "Diplomatik", "Zarif", "Adil"],
+    color: "#FCBAD3",
+    luckyNumber: [4, 6, 15],
   },
   scorpio: {
     sign: "scorpio",
@@ -173,17 +152,14 @@ export const zodiacSigns: Record<ZodiacSign, ZodiacInfo> = {
     symbol: "♏",
     element: "water",
     elementTr: "Su",
-    quality: "fixed",
     planet: "Pluto",
     planetTr: "Plüton",
     dateRange: "October 23 - November 21",
     dateRangeTr: "23 Ekim - 21 Kasım",
-    traits: {
-      positive: ["Tutkulu", "Kararlı", "Cesur", "Sadık", "Derin"],
-      negative: ["Kıskanç", "Gizli saklı", "Manipülatif", "Şüpheci"],
-    },
-    color: "#8B5A8B",
-    luckyNumber: [8, 11],
+    traits: ["Resourceful", "Brave", "Passionate", "Stubborn"],
+    traitsTr: ["Becerikli", "Cesur", "Tutkulu", "İnatçı"],
+    color: "#A8D8EA",
+    luckyNumber: [8, 11, 18],
   },
   sagittarius: {
     sign: "sagittarius",
@@ -192,17 +168,14 @@ export const zodiacSigns: Record<ZodiacSign, ZodiacInfo> = {
     symbol: "♐",
     element: "fire",
     elementTr: "Ateş",
-    quality: "mutable",
     planet: "Jupiter",
     planetTr: "Jüpiter",
     dateRange: "November 22 - December 21",
     dateRangeTr: "22 Kasım - 21 Aralık",
-    traits: {
-      positive: ["İyimser", "Özgür ruhlu", "Macera seven", "Dürüst", "Entelektüel"],
-      negative: ["Sorumsuz", "Taktisiz", "Sabırsız", "Aşırı özgüvenli"],
-    },
-    color: "#9B59B6",
-    luckyNumber: [3, 9],
+    traits: ["Generous", "Idealistic", "Great sense of humor"],
+    traitsTr: ["Cömert", "İdealist", "Harika mizah anlayışı"],
+    color: "#FFAAA5",
+    luckyNumber: [3, 7, 9],
   },
   capricorn: {
     sign: "capricorn",
@@ -211,17 +184,14 @@ export const zodiacSigns: Record<ZodiacSign, ZodiacInfo> = {
     symbol: "♑",
     element: "earth",
     elementTr: "Toprak",
-    quality: "cardinal",
     planet: "Saturn",
     planetTr: "Satürn",
     dateRange: "December 22 - January 19",
     dateRangeTr: "22 Aralık - 19 Ocak",
-    traits: {
-      positive: ["Disiplinli", "Sorumlu", "Hırslı", "Pratik", "Sabırlı"],
-      negative: ["Karamsar", "İnatçı", "Bağışlamaz", "Soğuk"],
-    },
-    color: "#34495E",
-    luckyNumber: [4, 8],
+    traits: ["Responsible", "Disciplined", "Self-control", "Good managers"],
+    traitsTr: ["Sorumlu", "Disiplinli", "Öz kontrol", "İyi yöneticiler"],
+    color: "#FF8B94",
+    luckyNumber: [4, 8, 13],
   },
   aquarius: {
     sign: "aquarius",
@@ -230,17 +200,14 @@ export const zodiacSigns: Record<ZodiacSign, ZodiacInfo> = {
     symbol: "♒",
     element: "air",
     elementTr: "Hava",
-    quality: "fixed",
     planet: "Uranus",
     planetTr: "Uranüs",
     dateRange: "January 20 - February 18",
     dateRangeTr: "20 Ocak - 18 Şubat",
-    traits: {
-      positive: ["Orijinal", "Bağımsız", "İnsancıl", "Zeki", "Vizyoner"],
-      negative: ["Duygusuz", "İnatçı", "Aşırı idealist", "Mesafeli"],
-    },
-    color: "#3498DB",
-    luckyNumber: [4, 7],
+    traits: ["Progressive", "Original", "Independent", "Humanitarian"],
+    traitsTr: ["İlerici", "Özgün", "Bağımsız", "İnsancıl"],
+    color: "#B4F8C8",
+    luckyNumber: [4, 7, 11],
   },
   pisces: {
     sign: "pisces",
@@ -249,26 +216,20 @@ export const zodiacSigns: Record<ZodiacSign, ZodiacInfo> = {
     symbol: "♓",
     element: "water",
     elementTr: "Su",
-    quality: "mutable",
     planet: "Neptune",
     planetTr: "Neptün",
     dateRange: "February 19 - March 20",
     dateRangeTr: "19 Şubat - 20 Mart",
-    traits: {
-      positive: ["Empatik", "Sanatsal", "Sezgisel", "Nazik", "Bilge"],
-      negative: ["Aşırı hassas", "Kaçış eğilimli", "Güvensiz", "Kurban rolü"],
-    },
-    color: "#1ABC9C",
-    luckyNumber: [3, 7],
+    traits: ["Compassionate", "Artistic", "Intuitive", "Gentle"],
+    traitsTr: ["Merhametli", "Sanatsal", "Sezgisel", "Nazik"],
+    color: "#A0E7E5",
+    luckyNumber: [3, 9, 12],
   },
 }
 
-/**
- * Get zodiac sign from birth date
- */
-export function getZodiacSignFromDate(birthDate: Date): ZodiacSign {
-  const month = birthDate.getMonth() + 1 // 1-12
-  const day = birthDate.getDate()
+export function getZodiacByDate(date: Date): ZodiacSign {
+  const month = date.getMonth() + 1
+  const day = date.getDate()
 
   if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return "aries"
   if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return "taurus"
@@ -282,4 +243,33 @@ export function getZodiacSignFromDate(birthDate: Date): ZodiacSign {
   if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return "capricorn"
   if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return "aquarius"
   return "pisces"
+}
+
+export function getAllZodiacSigns(): ZodiacInfo[] {
+  return Object.values(zodiacSigns)
+}
+
+
+/**
+ * Doğum tarihinden burç hesaplar
+ * @param birthDate - Doğum tarihi (Date object veya ISO string)
+ * @returns ZodiacSign
+ */
+export function getZodiacSignFromDate(birthDate: Date | string): ZodiacSign {
+  const date = typeof birthDate === 'string' ? new Date(birthDate) : birthDate
+  const month = date.getMonth() + 1 // 1-12
+  const day = date.getDate() // 1-31
+
+  if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return "aries"
+  if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return "taurus"
+  if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return "gemini"
+  if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return "cancer"
+  if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return "leo"
+  if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return "virgo"
+  if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return "libra"
+  if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return "scorpio"
+  if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return "sagittarius"
+  if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return "capricorn"
+  if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return "aquarius"
+  return "pisces" // (month === 2 && day >= 19) || (month === 3 && day <= 20)
 }

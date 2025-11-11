@@ -55,6 +55,7 @@ model User {
   accounts         Account[]
   sessions         Session[]
   horoscopeReadings HoroscopeReading[]
+  favoriteReadings  FavoriteReading[]
 
   @@map("users")
 }
@@ -78,8 +79,23 @@ model HoroscopeReading {
   date        DateTime @default(now())
   createdAt   DateTime @default(now()) @map("created_at")
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  favoritedBy FavoriteReading[]
 
   @@index([userId, zodiacSign, readingType])
   @@map("horoscope_readings")
+}
+
+model FavoriteReading {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  readingId String   @map("reading_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user    User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reading HoroscopeReading @relation(fields: [readingId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, readingId])
+  @@index([userId])
+  @@map("favorite_readings")
 }

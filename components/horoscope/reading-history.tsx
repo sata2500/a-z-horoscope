@@ -6,7 +6,7 @@ import remarkGfm from "remark-gfm"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { zodiacSigns } from "@/lib/zodiac"
-import { Loader2, Calendar, ChevronLeft, ChevronRight, Filter } from "lucide-react"
+import { Loader2, Calendar, ChevronLeft, ChevronRight, Filter, Heart, Share2 } from "lucide-react"
 import {
   Select,
   SelectContent,
@@ -39,6 +39,8 @@ export function ReadingHistory() {
   const [currentPage, setCurrentPage] = useState(1)
   const [zodiacFilter, setZodiacFilter] = useState<string>("all")
   const [typeFilter, setTypeFilter] = useState<string>("all")
+  const [favorites, setFavorites] = useState<Set<string>>(new Set())
+  const [togglingFavorite, setTogglingFavorite] = useState<string | null>(null)
 
   const fetchReadings = useCallback(async () => {
     setLoading(true)
@@ -48,11 +50,12 @@ export function ReadingHistory() {
         limit: "10",
       })
 
-      if (zodiacFilter !== "all") {
+      // "all" değerini API'ye gönderme, sadece spesifik filtreleri gönder
+      if (zodiacFilter && zodiacFilter !== "all") {
         params.append("zodiacSign", zodiacFilter)
       }
 
-      if (typeFilter !== "all") {
+      if (typeFilter && typeFilter !== "all") {
         params.append("readingType", typeFilter)
       }
 
@@ -70,9 +73,73 @@ export function ReadingHistory() {
     }
   }, [currentPage, zodiacFilter, typeFilter])
 
+  const fetchFavorites = useCallback(async () => {
+    try {
+      const response = await fetch("/api/favorites")
+      const data = await response.json()
+      
+      if (response.ok) {
+        const favoriteIds = new Set<string>(data.data.map((item: { id: string }) => item.id))
+        setFavorites(favoriteIds)
+      }
+    } catch (error) {
+      console.error("Failed to fetch favorites:", error)
+    }
+  }, [])
+
   useEffect(() => {
     fetchReadings()
-  }, [fetchReadings])
+    fetchFavorites()
+  }, [fetchReadings, fetchFavorites])
+
+  const toggleFavorite = async (readingId: string) => {
+    setTogglingFavorite(readingId)
+    try {
+      const response = await fetch("/api/favorites/toggle", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ readingId }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        if (data.isFavorite) {
+          setFavorites(prev => new Set([...prev, readingId]))
+        } else {
+          setFavorites(prev => {
+            const newSet = new Set(prev)
+            newSet.delete(readingId)
+            return newSet
+          })
+        }
+      }
+    } catch (error) {
+      console.error("Failed to toggle favorite:", error)
+    } finally {
+      setTogglingFavorite(null)
+    }
+  }
+
+  const shareReading = async (reading: { zodiacSign: string; readingType: string; content: string }) => {
+    const shareText = `${zodiacSigns[reading.zodiacSign as keyof typeof zodiacSigns].nameTr} - ${getReadingTypeLabel(reading.readingType)}\n\n${reading.content.substring(0, 200)}...`
+    
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Burç Yorumu",
+          text: shareText,
+          url: window.location.origin,
+        })
+      } catch {
+        console.log("Share cancelled")
+      }
+    } else {
+      // Fallback: Copy to clipboard
+      await navigator.clipboard.writeText(shareText)
+      alert("Yorum panoya kopyalandı!")
+    }
+  }
 
   const getReadingTypeLabel = (type: string) => {
     const labels: Record<string, string> = {
@@ -176,6 +243,31 @@ export function ReadingHistory() {
                           })}
                         </CardDescription>
                       </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => toggleFavorite(reading.id)}
+                        disabled={togglingFavorite === reading.id}
+                        className="h-8 w-8"
+                      >
+                        <Heart
+                          className={`size-4 ${
+                            favorites.has(reading.id)
+                              ? "fill-red-500 text-red-500"
+                              : "text-muted-foreground"
+                          }`}
+                        />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => shareReading(reading)}
+                        className="h-8 w-8"
+                      >
+                        <Share2 className="size-4 text-muted-foreground" />
+                      </Button>
                     </div>
                   </div>
                 </CardHeader>

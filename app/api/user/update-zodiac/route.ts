@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     const { birthDate } = updateZodiacSchema.parse(body)
 
     // Doğum tarihinden burç hesapla
-    const zodiacSign = getZodiacSignFromDate(birthDate)
+    const zodiacSign = getZodiacSignFromDate(new Date(birthDate))
 
     // Kullanıcıyı güncelle
     const updatedUser = await prisma.user.update({

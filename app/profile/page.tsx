@@ -190,7 +190,7 @@ export default function ProfilePage() {
                 <div className="rounded-lg bg-muted p-4">
                   <h4 className="mb-2 text-sm font-semibold">Özellikler</h4>
                   <div className="flex flex-wrap gap-2">
-                    {userZodiac.traitsTr.map((trait) => (
+                    {userZodiac.traits.positive.map((trait: string) => (
                       <span
                         key={trait}
                         className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary"
@@ -228,41 +228,32 @@ export default function ProfilePage() {
                         <label htmlFor="birthDate" className="text-sm font-medium">
                           Yeni Doğum Tarihi
                         </label>
-                        <div className="flex gap-2">
-                          <Input
-                            id="birthDate"
-                            type="date"
-                            value={birthDate ? (() => {
-                              const parts = birthDate.split('.')
-                              if (parts.length === 3) {
-                                const [day, month, year] = parts
-                                return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
-                              }
-                              return birthDate
-                            })() : ''}
-                            onChange={(e) => {
-                              // YYYY-MM-DD -> DD.MM.YYYY
-                              const isoDate = e.target.value
-                              if (isoDate) {
-                                const [year, month, day] = isoDate.split('-')
-                                setBirthDate(`${day}.${month}.${year}`)
-                              } else {
-                                setBirthDate('')
-                              }
-                            }}
-                            className="flex-1"
-                            max={new Date().toISOString().split('T')[0]}
-                          />
-                          <Input
-                            type="text"
-                            placeholder="veya GG.AA.YYYY"
-                            value={birthDate}
-                            onChange={(e) => setBirthDate(e.target.value)}
-                            className="flex-1"
-                          />
-                        </div>
+                        <Input
+                          id="birthDate"
+                          type="date"
+                          value={birthDate ? (() => {
+                            const parts = birthDate.split('.')
+                            if (parts.length === 3) {
+                              const [day, month, year] = parts
+                              return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+                            }
+                            return birthDate
+                          })() : ''}
+                          onChange={(e) => {
+                            // YYYY-MM-DD -> DD.MM.YYYY
+                            const isoDate = e.target.value
+                            if (isoDate) {
+                              const [year, month, day] = isoDate.split('-')
+                              setBirthDate(`${day}.${month}.${year}`)
+                            } else {
+                              setBirthDate('')
+                            }
+                          }}
+                          max={new Date().toISOString().split('T')[0]}
+                          required
+                        />
                         <p className="text-xs text-muted-foreground">
-                          Tarih seçici kullanın veya manuel olarak GG.AA.YYYY formatında girin (örn: 02.06.2001)
+                          Doğum tarihinizi seçin
                         </p>
                       </div>
 
