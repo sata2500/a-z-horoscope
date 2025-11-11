@@ -208,9 +208,13 @@ export default function ProfilePage() {
                           type="date"
                           value={birthDate}
                           onChange={(e) => setBirthDate(e.target.value)}
+                          onFocus={(e) => e.target.showPicker?.()}
                           required
                           max={new Date().toISOString().split('T')[0]}
                         />
+                        <p className="text-xs text-muted-foreground">
+                          Tarih seçici kullanın veya manuel olarak YYYY-MM-DD formatında girin
+                        </p>
                       </div>
 
                       {error && (
