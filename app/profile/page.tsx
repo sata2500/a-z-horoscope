@@ -40,10 +40,28 @@ export default function ProfilePage() {
     setLoading(true)
 
     try {
+      // DD.MM.YYYY formatını ISO formatına çevir
+      const parts = birthDate.split('.')
+      if (parts.length !== 3) {
+        setError("Geçersiz tarih formatı. GG.AA.YYYY formatında girin.")
+        setLoading(false)
+        return
+      }
+      
+      const [day, month, year] = parts
+      const isoDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+      const dateObj = new Date(isoDate)
+      
+      if (isNaN(dateObj.getTime())) {
+        setError("Geçersiz tarih. Lütfen geçerli bir tarih girin.")
+        setLoading(false)
+        return
+      }
+
       const response = await fetch("/api/user/update-zodiac", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ birthDate: new Date(birthDate).toISOString() }),
+        body: JSON.stringify({ birthDate: dateObj.toISOString() }),
       })
 
       const data = await response.json()
@@ -205,15 +223,14 @@ export default function ProfilePage() {
                         </label>
                         <Input
                           id="birthDate"
-                          type="date"
+                          type="text"
+                          placeholder="GG.AA.YYYY (örn: 02.06.2001)"
                           value={birthDate}
                           onChange={(e) => setBirthDate(e.target.value)}
-                          onFocus={(e) => e.target.showPicker?.()}
                           required
-                          max={new Date().toISOString().split('T')[0]}
                         />
                         <p className="text-xs text-muted-foreground">
-                          Tarih seçici kullanın veya manuel olarak YYYY-MM-DD formatında girin
+                          Doğum tarihinizi GG.AA.YYYY formatında girin (örn: 02.06.2001)
                         </p>
                       </div>
 

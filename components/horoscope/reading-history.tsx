@@ -1,6 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { zodiacSigns } from "@/lib/zodiac"
@@ -179,9 +181,11 @@ export function ReadingHistory() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="whitespace-pre-wrap text-sm leading-relaxed">
-                    {reading.content}
-                  </p>
+                  <div className="prose prose-sm dark:prose-invert max-w-none">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {reading.content}
+                    </ReactMarkdown>
+                  </div>
                 </CardContent>
               </Card>
             )
