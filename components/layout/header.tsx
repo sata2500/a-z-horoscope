@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { useSession, signOut } from "next-auth/react"
+import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "./theme-toggle"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -13,12 +14,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Sparkles, Menu } from "lucide-react"
+import { Sparkles, Menu, Home, Star, Calendar, Heart } from "lucide-react"
 import { useState } from "react"
 
 export function Header() {
   const { data: session } = useSession()
+  const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  
+  // Ana sayfada mıyız kontrolü
+  const isHomePage = pathname === "/"
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -33,29 +38,86 @@ export function Header() {
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6">
-          <Link href="/" className="text-sm font-medium transition-colors hover:text-primary">
-            Ana Sayfa
-          </Link>
-          <Link href="/public-horoscope" className="text-sm font-medium transition-colors hover:text-primary">
-            Burç Yorumları
-          </Link>
-          <Link href="/public-natal-chart" className="text-sm font-medium transition-colors hover:text-primary">
-            Doğum Haritası
-          </Link>
-          {session && (
-            <>
-              <Link href="/dashboard" className="text-sm font-medium transition-colors hover:text-primary">
-                Dashboard
-              </Link>
-              <Link href="/zodiac" className="text-sm font-medium transition-colors hover:text-primary">
-                Burçlar
-              </Link>
-              <Link href="/journal" className="text-sm font-medium transition-colors hover:text-primary">
-                Günlüğüm
-              </Link>
-            </>
+        <nav className="hidden md:flex items-center gap-3">
+          {/* Ana Sayfa - Sadece ana sayfa dışında göster */}
+          {!isHomePage && (
+            <Link 
+              href="/" 
+              className="group relative px-4 py-2 rounded-lg transition-all hover:bg-accent"
+            >
+              <div className="flex items-center gap-2">
+                <Home className="size-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                <span className="text-sm font-medium group-hover:text-primary transition-colors">
+                  Ana Sayfa
+                </span>
+              </div>
+            </Link>
           )}
+          
+          {/* Burçlar */}
+          {session && (
+            <Link 
+              href="/zodiac"
+              className={`group relative px-4 py-2 rounded-lg transition-all ${
+                pathname === "/zodiac" || pathname?.startsWith("/zodiac/")
+                  ? "bg-primary/10 text-primary"
+                  : "hover:bg-accent"
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <Star className={`size-4 transition-colors ${
+                  pathname === "/zodiac" || pathname?.startsWith("/zodiac/")
+                    ? "text-primary"
+                    : "text-muted-foreground group-hover:text-primary"
+                }`} />
+                <span className="text-sm font-medium">
+                  Burçlar
+                </span>
+              </div>
+            </Link>
+          )}
+          
+          {/* Burç Yorumları */}
+          <Link 
+            href="/public-horoscope"
+            className={`group relative px-4 py-2 rounded-lg transition-all ${
+              pathname === "/public-horoscope"
+                ? "bg-primary/10 text-primary"
+                : "hover:bg-accent"
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <Sparkles className={`size-4 transition-colors ${
+                pathname === "/public-horoscope"
+                  ? "text-primary"
+                  : "text-muted-foreground group-hover:text-primary"
+              }`} />
+              <span className="text-sm font-medium">
+                Burç Yorumları
+              </span>
+            </div>
+          </Link>
+          
+          {/* Doğum Haritası */}
+          <Link 
+            href="/public-natal-chart"
+            className={`group relative px-4 py-2 rounded-lg transition-all ${
+              pathname === "/public-natal-chart"
+                ? "bg-primary/10 text-primary"
+                : "hover:bg-accent"
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <Calendar className={`size-4 transition-colors ${
+                pathname === "/public-natal-chart"
+                  ? "text-primary"
+                  : "text-muted-foreground group-hover:text-primary"
+              }`} />
+              <span className="text-sm font-medium">
+                Doğum Haritası
+              </span>
+            </div>
+          </Link>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -124,52 +186,77 @@ export function Header() {
       {/* Mobile Navigation Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-border/40 bg-background/95 backdrop-blur">
-          <nav className="container py-4 flex flex-col gap-3">
-            <Link 
-              href="/" 
-              className="text-sm font-medium transition-colors hover:text-primary py-2"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Ana Sayfa
-            </Link>
+          <nav className="container py-4 flex flex-col gap-2">
+            {/* Ana Sayfa - Sadece ana sayfa dışında göster */}
+            {!isHomePage && (
+              <Link 
+                href="/" 
+                className="flex items-center gap-3 px-4 py-3 rounded-lg transition-all hover:bg-accent"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Home className="size-5 text-muted-foreground" />
+                <span className="text-sm font-medium">Ana Sayfa</span>
+              </Link>
+            )}
+            
+            {/* Burçlar */}
+            {session && (
+              <Link 
+                href="/zodiac" 
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                  pathname === "/zodiac" || pathname?.startsWith("/zodiac/")
+                    ? "bg-primary/10 text-primary"
+                    : "hover:bg-accent"
+                }`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Star className={`size-5 ${
+                  pathname === "/zodiac" || pathname?.startsWith("/zodiac/")
+                    ? "text-primary"
+                    : "text-muted-foreground"
+                }`} />
+                <span className="text-sm font-medium">Burçlar</span>
+              </Link>
+            )}
+            
+            {/* Burç Yorumları */}
             <Link 
               href="/public-horoscope" 
-              className="text-sm font-medium transition-colors hover:text-primary py-2"
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                pathname === "/public-horoscope"
+                  ? "bg-primary/10 text-primary"
+                  : "hover:bg-accent"
+              }`}
               onClick={() => setMobileMenuOpen(false)}
             >
-              Burç Yorumları
+              <Sparkles className={`size-5 ${
+                pathname === "/public-horoscope"
+                  ? "text-primary"
+                  : "text-muted-foreground"
+              }`} />
+              <span className="text-sm font-medium">Burç Yorumları</span>
             </Link>
+            
+            {/* Doğum Haritası */}
             <Link 
               href="/public-natal-chart" 
-              className="text-sm font-medium transition-colors hover:text-primary py-2"
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                pathname === "/public-natal-chart"
+                  ? "bg-primary/10 text-primary"
+                  : "hover:bg-accent"
+              }`}
               onClick={() => setMobileMenuOpen(false)}
             >
-              Doğum Haritası
+              <Calendar className={`size-5 ${
+                pathname === "/public-natal-chart"
+                  ? "text-primary"
+                  : "text-muted-foreground"
+              }`} />
+              <span className="text-sm font-medium">Doğum Haritası</span>
             </Link>
+            
             {session && (
               <>
-                <div className="border-t border-border/40 my-2" />
-                <Link 
-                  href="/dashboard" 
-                  className="text-sm font-medium transition-colors hover:text-primary py-2"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Dashboard
-                </Link>
-                <Link 
-                  href="/zodiac" 
-                  className="text-sm font-medium transition-colors hover:text-primary py-2"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Burçlar
-                </Link>
-                <Link 
-                  href="/journal" 
-                  className="text-sm font-medium transition-colors hover:text-primary py-2"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Günlüğüm
-                </Link>
                 <div className="border-t border-border/40 my-2" />
                 <Button 
                   variant="outline" 
