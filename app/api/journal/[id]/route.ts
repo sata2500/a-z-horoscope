@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { db } from "@/lib/db"
+import { sanitize } from "@/lib/sanitize"
 
 // GET /api/journal/:id - Tek günlük detayı
 export async function GET(
@@ -107,16 +108,18 @@ export async function PUT(
       )
     }
 
+    const sanitizedData = sanitize({ title, content, tags });
+
     // Günlük güncelle
     const updatedEntry = await db.journalEntry.update({
       where: {
         id,
       },
       data: {
-        ...(title !== undefined && { title }),
-        ...(content !== undefined && { content: content.trim() }),
+        ...(sanitizedData.title !== undefined && { title: sanitizedData.title }),
+        ...(sanitizedData.content !== undefined && { content: sanitizedData.content.trim() }),
         ...(mood !== undefined && { mood }),
-        ...(tags !== undefined && { tags }),
+        ...(sanitizedData.tags !== undefined && { tags: sanitizedData.tags }),
       },
     })
 
