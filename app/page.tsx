@@ -25,7 +25,7 @@ export default async function HomePage() {
             </h1>
             <p className="mb-8 text-lg text-muted-foreground md:text-xl">
               Gemini AI destekli kişiselleştirilmiş burç yorumları ve Swiss Ephemeris ile gerçek astronomik verilere dayalı analizler. 
-              Modern teknoloji ile kadim bilgeliği birleştiren Az-Horoscope&apos;a hoş geldiniz.
+              Modern teknoloji ile kadim bilgeliği birleştiren AZ-Horoscope&apos;a hoş geldiniz.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
               {!session ? (
@@ -76,7 +76,7 @@ export default async function HomePage() {
         <div className="container">
           <div className="mx-auto mb-12 max-w-2xl text-center">
             <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
-              Neden Az-Horoscope?
+              Neden AZ-Horoscope?
             </h2>
             <p className="text-lg text-muted-foreground">
               Modern teknoloji ve astrolojinin mükemmel birleşimi ile size özel deneyim

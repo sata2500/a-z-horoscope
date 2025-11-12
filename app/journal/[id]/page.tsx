@@ -13,7 +13,7 @@ import { DeleteJournalButton } from "./delete-button"
 import type { TransitData } from '@/types'
 
 export const metadata: Metadata = {
-  title: "Günlük Detayı | Az-Horoscope",
+  title: "Günlük Detayı | AZ-Horoscope",
 }
 
 const moodEmojis = [

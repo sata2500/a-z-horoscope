@@ -17,14 +17,29 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Az-Horoscope | Yapay Zeka Destekli Astroloji Platformu",
+  title: "AZ-Horoscope | Yapay Zeka Destekli Astroloji Platformu",
   description: "Modern astroloji platformu. Gemini AI ile kişiselleştirilmiş burç yorumları ve analizler.",
   keywords: ["burç", "astroloji", "horoscope", "yapay zeka", "gemini"],
   authors: [{ name: "Salih TANRISEVEN" }],
+  icons: {
+    icon: [
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon.ico', sizes: 'any' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    other: [
+      { rel: 'android-chrome-192x192', url: '/android-chrome-192x192.png' },
+      { rel: 'android-chrome-512x512', url: '/android-chrome-512x512.png' },
+    ],
+  },
   openGraph: {
-    title: "Az-Horoscope",
+    title: "AZ-Horoscope",
     description: "Yapay zeka destekli modern astroloji platformu",
     type: "website",
+    images: ['/logo-full.png'],
   },
 }
 

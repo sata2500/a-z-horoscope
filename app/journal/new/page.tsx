@@ -5,7 +5,7 @@ import { JournalForm } from "@/components/journal/journal-form"
 import { BookOpen } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Yeni Günlük | Az-Horoscope",
+  title: "Yeni Günlük | AZ-Horoscope",
   description: "Yeni günlük girişi oluştur",
 }
 

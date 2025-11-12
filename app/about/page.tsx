@@ -5,8 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Sparkles, Heart, Users, Zap } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Hakkımızda | Az-Horoscope",
-  description: "Az-Horoscope hakkında bilgi edinin. Yapay zeka destekli astroloji platformumuz hakkında daha fazla bilgi alın.",
+  title: "Hakkımızda | AZ-Horoscope",
+  description: "AZ-Horoscope hakkında bilgi edinin. Yapay zeka destekli astroloji platformumuz hakkında daha fazla bilgi alın.",
 }
 
 export default function AboutPage() {
@@ -31,7 +31,7 @@ export default function AboutPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <p>
-              Az-Horoscope, astroloji meraklılarına gerçek astronomik verilere dayalı, yapay zeka destekli kişiselleştirilmiş burç yorumları sunmak için tasarlanmış profesyonel bir platformdur.
+              AZ-Horoscope, astroloji meraklılarına gerçek astronomik verilere dayalı, yapay zeka destekli kişiselleştirilmiş burç yorumları sunmak için tasarlanmış profesyonel bir platformdur.
             </p>
             <p>
               Amacımız, kadim astroloji bilgeliğini modern teknoloji ile birleştirerek kullanıcılarımıza kendilerini daha iyi anlamalarına ve yaşamlarında bilinçli kararlar almalarına yardımcı olacak içgörüler sunmaktır.
@@ -110,7 +110,7 @@ export default function AboutPage() {
           </CardHeader>
           <CardContent>
             <p>
-              Az-Horoscope, astroloji tutkusu ve teknoloji uzmanlığını bir araya getiren bir ekip tarafından geliştirilmiştir. Hem astroloji meraklıları hem de yazılım geliştiricilerinden oluşan ekibimiz, kullanıcılarımıza en iyi deneyimi sunmak için sürekli çalışmaktadır.
+              AZ-Horoscope, astroloji tutkusu ve teknoloji uzmanlığını bir araya getiren bir ekip tarafından geliştirilmiştir. Hem astroloji meraklıları hem de yazılım geliştiricilerinden oluşan ekibimiz, kullanıcılarımıza en iyi deneyimi sunmak için sürekli çalışmaktadır.
             </p>
           </CardContent>
         </Card>

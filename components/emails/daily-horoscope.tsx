@@ -51,7 +51,7 @@ export function DailyHoroscopeEmail({
           color: '#1a1a1a',
           margin: '0 0 10px 0',
         }}>
-          🌟 Az-Horoscope
+          🌟 AZ-Horoscope
         </h1>
         <p style={{ 
           fontSize: '14px',
@@ -163,7 +163,7 @@ export function DailyHoroscopeEmail({
           color: '#999',
           margin: '0 0 10px 0',
         }}>
-          Bu e-postayı aldınız çünkü Az-Horoscope platformunda günlük burç yorumu bildirimlerini etkinleştirdiniz.
+          Bu e-postayı aldınız çünkü AZ-Horoscope platformunda günlük burç yorumu bildirimlerini etkinleştirdiniz.
         </p>
         <p style={{ 
           fontSize: '13px',
@@ -185,7 +185,7 @@ export function DailyHoroscopeEmail({
           color: '#bbb',
           margin: '15px 0 0 0',
         }}>
-          © 2025 Az-Horoscope. Tüm hakları saklıdır.
+          © 2025 AZ-Horoscope. Tüm hakları saklıdır.
         </p>
       </div>
     </div>

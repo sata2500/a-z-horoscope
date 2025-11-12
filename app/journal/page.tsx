@@ -8,7 +8,7 @@ import { JournalCard } from "@/components/journal/journal-card"
 import { Plus, BookOpen } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Günlüğüm | Az-Horoscope",
+  title: "Günlüğüm | AZ-Horoscope",
   description: "Kişisel günlüğünüz ve ruh hali takibi",
 }
 

@@ -2,8 +2,8 @@ import { Metadata } from "next"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "Gizlilik Politikası | Az-Horoscope",
-  description: "Az-Horoscope gizlilik politikası. Verilerinizin nasıl toplandığı, kullanıldığı ve korunduğu hakkında bilgi edinin.",
+  title: "Gizlilik Politikası | AZ-Horoscope",
+  description: "AZ-Horoscope gizlilik politikası. Verilerinizin nasıl toplandığı, kullanıldığı ve korunduğu hakkında bilgi edinin.",
 }
 
 export default function PrivacyPage() {
@@ -15,7 +15,7 @@ export default function PrivacyPage() {
 
         <h2 className="text-foreground dark:text-white">1. Giriş</h2>
         <p className="text-foreground dark:text-gray-200">
-          Az-Horoscope olarak, kullanıcılarımızın gizliliğini korumayı taahhüt ediyoruz. Bu Gizlilik Politikası, kişisel bilgilerinizi nasıl topladığımızı, kullandığımızı, sakladığımızı ve koruduğumuzu açıklamaktadır.
+          AZ-Horoscope olarak, kullanıcılarımızın gizliliğini korumayı taahhüt ediyoruz. Bu Gizlilik Politikası, kişisel bilgilerinizi nasıl topladığımızı, kullandığımızı, sakladığımızı ve koruduğumuzu açıklamaktadır.
         </p>
 
         <h2 className="text-foreground dark:text-white">2. Topladığımız Bilgiler</h2>

@@ -10,7 +10,7 @@ export function Footer() {
             <Link href="/" className="flex items-center gap-2">
               <Sparkles className="size-6 text-primary" />
               <span className="text-xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-                Az-Horoscope
+                AZ-Horoscope
               </span>
             </Link>
             <p className="text-sm text-muted-foreground">
@@ -76,7 +76,7 @@ export function Footer() {
         </div>
 
         <div className="mt-8 border-t border-border/40 pt-8 text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} Az-Horoscope. Tüm hakları saklıdır.</p>
+          <p>© {new Date().getFullYear()} AZ-Horoscope. Tüm hakları saklıdır.</p>
           <p className="mt-2">Geliştirici: Salih TANRISEVEN</p>
         </div>
       </div>

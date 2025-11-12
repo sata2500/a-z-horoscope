@@ -1,4 +1,4 @@
-# 🌌 Az-Horoscope: AI-Powered Astrology Platform
+# 🌌 AZ-Horoscope: AI-Powered Astrology Platform
 
 ![Framework: Next.js](https://img.shields.io/badge/Framework-Next.js-black?style=for-the-badge&logo=next.js)
 ![Language: TypeScript](https://img.shields.io/badge/Language-TypeScript-blue?style=for-the-badge&logo=typescript)
@@ -6,7 +6,7 @@
 ![ORM: Prisma](https://img.shields.io/badge/ORM-Prisma-2D3748?style=for-the-badge&logo=prisma)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)
 
-**Az-Horoscope** is a professional, AI-powered astrology platform that works with real astronomical data. It combines the ancient wisdom of astrology with the power of modern technology to provide users with personalized insights.
+**AZ-Horoscope** is a professional, AI-powered astrology platform that works with real astronomical data. It combines the ancient wisdom of astrology with the power of modern technology to provide users with personalized insights.
 
 ## ✨ Features
 

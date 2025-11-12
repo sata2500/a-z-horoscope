@@ -2,8 +2,8 @@ import { Metadata } from "next"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "Kullanım Koşulları | Az-Horoscope",
-  description: "Az-Horoscope kullanım koşulları. Platformumuzu kullanırken uymanız gereken kurallar ve şartlar.",
+  title: "Kullanım Koşulları | AZ-Horoscope",
+  description: "AZ-Horoscope kullanım koşulları. Platformumuzu kullanırken uymanız gereken kurallar ve şartlar.",
 }
 
 export default function TermsPage() {
@@ -15,12 +15,12 @@ export default function TermsPage() {
 
         <h2 className="text-foreground dark:text-white">1. Kabul</h2>
         <p className="text-foreground dark:text-gray-200">
-          Az-Horoscope platformunu kullanarak, bu Kullanım Koşullarını kabul etmiş olursunuz. Bu koşulları kabul etmiyorsanız, lütfen platformumuzu kullanmayın.
+          AZ-Horoscope platformunu kullanarak, bu Kullanım Koşullarını kabul etmiş olursunuz. Bu koşulları kabul etmiyorsanız, lütfen platformumuzu kullanmayın.
         </p>
 
         <h2 className="text-foreground dark:text-white">2. Hizmet Tanımı</h2>
         <p className="text-foreground dark:text-gray-200">
-          Az-Horoscope, kullanıcılara yapay zeka destekli burç yorumları, doğum haritası analizleri ve astroloji ile ilgili içerikler sunan bir web platformudur. Sunduğumuz hizmetler şunları içerir:
+          AZ-Horoscope, kullanıcılara yapay zeka destekli burç yorumları, doğum haritası analizleri ve astroloji ile ilgili içerikler sunan bir web platformudur. Sunduğumuz hizmetler şunları içerir:
         </p>
         <ul className="text-foreground dark:text-gray-200">
           <li>Günlük, haftalık ve aylık burç yorumları</li>
@@ -59,13 +59,13 @@ export default function TermsPage() {
 
         <h2 className="text-foreground dark:text-white">5. Fikri Mülkiyet</h2>
         <p className="text-foreground dark:text-gray-200">
-          Platformumuzda yer alan tüm içerikler (metin, görsel, logo, tasarım vb.) Az-Horoscope&apos;un fikri mülkiyetidir ve telif hakkı yasaları ile korunmaktadır. İzinsiz kullanım, kopyalama veya dağıtım yasaktır.
+          Platformumuzda yer alan tüm içerikler (metin, görsel, logo, tasarım vb.) AZ-Horoscope&apos;un fikri mülkiyetidir ve telif hakkı yasaları ile korunmaktadır. İzinsiz kullanım, kopyalama veya dağıtım yasaktır.
         </p>
 
         <h2 className="text-foreground dark:text-white">6. Sorumluluk Reddi</h2>
         <h3 className="text-foreground dark:text-gray-100">6.1. Eğlence Amaçlı</h3>
         <p className="text-foreground dark:text-gray-200">
-          Az-Horoscope&apos;ta sunulan burç yorumları ve astroloji analizleri <strong className="text-foreground dark:text-white font-bold">yalnızca eğlence ve bilgilendirme amaçlıdır</strong>. Bu yorumlar, profesyonel tavsiye (tıbbi, hukuki, finansal vb.) yerine geçmez.
+          AZ-Horoscope&apos;ta sunulan burç yorumları ve astroloji analizleri <strong className="text-foreground dark:text-white font-bold">yalnızca eğlence ve bilgilendirme amaçlıdır</strong>. Bu yorumlar, profesyonel tavsiye (tıbbi, hukuki, finansal vb.) yerine geçmez.
         </p>
 
         <h3 className="text-foreground dark:text-gray-100">6.2. Doğruluk Garantisi Yok</h3>
@@ -75,7 +75,7 @@ export default function TermsPage() {
 
         <h3 className="text-foreground dark:text-gray-100">6.3. Kararlarınızın Sorumluluğu</h3>
         <p className="text-foreground dark:text-gray-200">
-          Platformumuzda sunulan bilgilere dayanarak aldığınız kararlardan siz sorumlusunuz. Az-Horoscope, bu kararlardan kaynaklanan herhangi bir zarardan sorumlu tutulamaz.
+          Platformumuzda sunulan bilgilere dayanarak aldığınız kararlardan siz sorumlusunuz. AZ-Horoscope, bu kararlardan kaynaklanan herhangi bir zarardan sorumlu tutulamaz.
         </p>
 
         <h2 className="text-foreground dark:text-white">7. Hizmet Kesintileri</h2>
@@ -115,7 +115,7 @@ export default function TermsPage() {
 
         <div className="mt-8 p-4 bg-muted dark:bg-gray-800 rounded-lg border border-border dark:border-gray-700">
           <p className="text-sm text-foreground dark:text-gray-200">
-            <strong className="text-foreground dark:text-white font-bold">Not:</strong> Bu Kullanım Koşulları, Az-Horoscope platformunu kullanırken uymanız gereken kuralları belirler. Platformumuzu kullanarak, bu koşulları okuduğunuzu ve kabul ettiğinizi beyan edersiniz.
+            <strong className="text-foreground dark:text-white font-bold">Not:</strong> Bu Kullanım Koşulları, AZ-Horoscope platformunu kullanırken uymanız gereken kuralları belirler. Platformumuzu kullanarak, bu koşulları okuduğunuzu ve kabul ettiğinizi beyan edersiniz.
           </p>
         </div>
       </div>

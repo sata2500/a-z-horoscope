@@ -14,7 +14,7 @@ export async function GET() {
   
   return NextResponse.json({
     success: true,
-    message: "Az-Horoscope Public API - Swiss Ephemeris + Gemini AI destekli profesyonel burç yorumları",
+    message: "AZ-Horoscope Public API - Swiss Ephemeris + Gemini AI destekli profesyonel burç yorumları",
     version: "1.0.0",
     features: [
       "Gerçek astronomik verilerle (Swiss Ephemeris) hesaplanan gezegen pozisyonları",

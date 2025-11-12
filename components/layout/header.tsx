@@ -30,9 +30,13 @@ export function Header() {
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2">
-            <Sparkles className="size-6 text-primary" />
+            <img 
+              src="/logo-navbar.png" 
+              alt="AZ-Horoscope Logo" 
+              className="size-10"
+            />
             <span className="text-xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-              Az-Horoscope
+              AZ-Horoscope
             </span>
           </Link>
         </div>
