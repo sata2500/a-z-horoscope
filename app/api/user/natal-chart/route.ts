@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { prisma } from "@/lib/db"
+import { Prisma } from "@prisma/client"
 
 /**
  * GET /api/user/natal-chart
@@ -147,7 +148,7 @@ export async function DELETE() {
         birthPlace: null,
         birthLatitude: null,
         birthLongitude: null,
-        natalChartData: null,
+        natalChartData: Prisma.JsonNull,
         natalChartCalculatedAt: null,
       },
     })
