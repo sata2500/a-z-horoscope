@@ -8,8 +8,9 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { TransitDisplay } from "@/components/journal/transit-display"
 import { AnalysisPanel } from "@/components/journal/analysis-panel"
-import { ArrowLeft, Edit, Trash2 } from "lucide-react"
+import { ArrowLeft, Edit } from "lucide-react"
 import { DeleteJournalButton } from "./delete-button"
+import type { TransitData } from '@/types'
 
 export const metadata: Metadata = {
   title: "Günlük Detayı | Az-Horoscope",
@@ -127,7 +128,7 @@ export default async function JournalDetailPage({
         </Card>
 
         {/* Transit Bilgileri */}
-        <TransitDisplay transits={entry.transits} />
+        <TransitDisplay transits={entry.transits as TransitData | null} />
 
         {/* AI Analizi */}
         <AnalysisPanel entryId={entry.id} hasTransits={!!entry.transits} />

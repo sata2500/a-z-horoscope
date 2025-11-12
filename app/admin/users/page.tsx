@@ -36,7 +36,7 @@ interface UsersResponse {
 export default function AdminUsersPage() {
   const [data, setData] = useState<UsersResponse | null>(null)
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState("")
+  const [error, setError] = useState<string | null>(null)
   const [search, setSearch] = useState("")
   const [page, setPage] = useState(1)
 
@@ -56,24 +56,41 @@ export default function AdminUsersPage() {
   }
 
   useEffect(() => {
-    setLoading(true)
-    const params = new URLSearchParams({
-      page: page.toString(),
-      limit: '10',
-      ...(search && { search }),
-    })
+    const controller = new AbortController()
+    
+    async function loadUsers() {
+      setLoading(true)
+      setError(null)
+      
+      try {
+        const params = new URLSearchParams({
+          page: page.toString(),
+          limit: '10',
+          ...(search && { search }),
+        })
 
-    fetch(`/api/admin/users?${params}`)
-      .then(res => res.json())
-      .then(data => {
+        const res = await fetch(`/api/admin/users?${params}`, {
+          signal: controller.signal
+        })
+        const data = await res.json()
+        
         if (data.success) {
           setData(data)
         } else {
           setError(data.error || 'Bir hata oluştu')
         }
-      })
-      .catch(() => setError('Bağlantı hatası'))
-      .finally(() => setLoading(false))
+      } catch (err) {
+        if (err instanceof Error && err.name !== 'AbortError') {
+          setError('Bağlantı hatası')
+        }
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    loadUsers()
+    
+    return () => controller.abort()
   }, [page, search])
 
   const handleSearch = (value: string) => {

@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
  * GET /api/user/notification-settings
  * Kullanıcının mevcut bildirim tercihlerini getirir
  */
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const session = await auth();
     

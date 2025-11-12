@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
     
     try {
       const transitData = calculateTransits(entryDate)
-      const transitMap: Record<string, any> = {}
+      const transitMap: Record<string, string> = {}
       
       transitData.forEach(planet => {
         const key = planet.planetName.toLowerCase().replace(/ü/g, 'u')
@@ -108,7 +108,13 @@ export async function GET(req: NextRequest) {
     const search = searchParams.get("search")
 
     // Filtreleme koşulları
-    const where: any = {
+    const where: {
+      userId: string;
+      mood?: number;
+      tags?: { has?: string; hasSome?: string[] };
+      date?: { gte?: Date; lte?: Date };
+      OR?: Array<{ title?: { contains: string; mode: 'insensitive' }; content?: { contains: string; mode: 'insensitive' } }>;
+    } = {
       userId: session.user.id,
     }
 

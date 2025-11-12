@@ -1,9 +1,10 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import type { TransitData } from '@/types'
 
 interface TransitDisplayProps {
-  transits: any
+  transits: TransitData | null
   compact?: boolean
 }
 

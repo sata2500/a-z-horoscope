@@ -12,7 +12,6 @@ export async function requireAdmin() {
     redirect("/login")
   }
   
-  // @ts-ignore - role field henüz session type'ında yok
   if (session.user.role !== "ADMIN") {
     redirect("/")
   }
@@ -30,6 +29,5 @@ export async function isAdmin() {
     return false
   }
   
-  // @ts-ignore - role field henüz session type'ında yok
   return session.user.role === "ADMIN"
 }

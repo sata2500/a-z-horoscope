@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai"
+import type { TransitData } from '@/types'
 import { calculateTransits, PlanetPosition } from "./swisseph"
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "")
@@ -184,7 +185,7 @@ Yorum Türkçe olmalı, samimi ve sıcak bir dille yazılmalı. Yaklaşık 400-4
 export async function analyzeJournalEntry(
   content: string,
   mood: number,
-  transits: any
+  transits: TransitData | null
 ): Promise<{
   emotionalTone: string
   keywords: string[]
@@ -248,7 +249,7 @@ export async function findJournalPatterns(
     date: Date
     mood: number
     content: string
-    transits: any
+    transits: TransitData | null
   }>
 ): Promise<{
   moodTrend: string

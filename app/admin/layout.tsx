@@ -1,6 +1,6 @@
 import { requireAdmin } from "@/lib/admin"
 import Link from "next/link"
-import { LayoutDashboard, Users, BarChart3, Settings, Home } from "lucide-react"
+import { LayoutDashboard, Users, BarChart3, Home } from "lucide-react"
 
 export default async function AdminLayout({
   children,

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { db } from "@/lib/db"
 import { analyzeJournalEntry, findJournalPatterns } from "@/lib/gemini"
+import type { TransitData } from '@/types'
 
 // POST /api/journal/analyze - Günlük analizi
 export async function POST(req: NextRequest) {
@@ -37,7 +38,14 @@ export async function POST(req: NextRequest) {
         )
       }
 
-      const analysis = await findJournalPatterns(entries)
+      const analysis = await findJournalPatterns(
+        entries.map(entry => ({
+          date: entry.date,
+          mood: entry.mood,
+          content: entry.content,
+          transits: entry.transits as TransitData | null,
+        }))
+      )
 
       return NextResponse.json({
         success: true,
@@ -68,7 +76,7 @@ export async function POST(req: NextRequest) {
       const analysis = await analyzeJournalEntry(
         entry.content,
         entry.mood,
-        analyzeTransits ? entry.transits : null
+        analyzeTransits ? (entry.transits as TransitData | null) : null
       )
 
       return NextResponse.json({

@@ -10,7 +10,6 @@ export async function GET(req: NextRequest) {
   try {
     const session = await auth();
     
-    // @ts-ignore - role field
     if (!session || session.user.role !== 'ADMIN') {
       return NextResponse.json(
         { error: 'Yetkisiz erişim' },

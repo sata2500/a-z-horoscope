@@ -18,11 +18,17 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     async session({ session, user }) {
       if (session.user && user) {
         session.user.id = user.id
-        // @ts-ignore - Ek alanları ekle
-        session.user.role = (user as any).role || 'USER'
-        session.user.birthDate = (user as any).birthDate
-        session.user.zodiacSign = (user as any).zodiacSign
-        session.user.createdAt = (user as any).createdAt
+        // Type assertion for extended user fields from Prisma
+        const extendedUser = user as typeof user & {
+          role?: string;
+          birthDate?: Date | null;
+          zodiacSign?: string | null;
+          createdAt?: Date;
+        }
+        session.user.role = (extendedUser.role as 'USER' | 'ADMIN') || 'USER'
+        session.user.birthDate = extendedUser.birthDate ?? null
+        session.user.zodiacSign = extendedUser.zodiacSign ?? null
+        session.user.createdAt = extendedUser.createdAt ?? new Date()
       }
       return session
     },
