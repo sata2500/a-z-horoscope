@@ -273,9 +273,24 @@ export function ReadingHistory() {
                 </CardHeader>
                 <CardContent>
                   <div className="prose prose-sm dark:prose-invert max-w-none">
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                      {reading.content}
-                    </ReactMarkdown>
+                    <div className="text-foreground">
+                      <ReactMarkdown 
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          p: ({ children }) => <p className="text-foreground mb-4">{children}</p>,
+                          strong: ({ children }) => <strong className="text-foreground font-bold">{children}</strong>,
+                          em: ({ children }) => <em className="text-foreground italic">{children}</em>,
+                          h1: ({ children }) => <h1 className="text-foreground text-2xl font-bold mb-4">{children}</h1>,
+                          h2: ({ children }) => <h2 className="text-foreground text-xl font-bold mb-3">{children}</h2>,
+                          h3: ({ children }) => <h3 className="text-foreground text-lg font-bold mb-2">{children}</h3>,
+                          ul: ({ children }) => <ul className="text-foreground list-disc list-inside mb-4">{children}</ul>,
+                          ol: ({ children }) => <ol className="text-foreground list-decimal list-inside mb-4">{children}</ol>,
+                          li: ({ children }) => <li className="text-foreground mb-1">{children}</li>,
+                        }}
+                      >
+                        {reading.content}
+                      </ReactMarkdown>
+                    </div>
                   </div>
                 </CardContent>
               </Card>

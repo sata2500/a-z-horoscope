@@ -127,7 +127,7 @@ export function AnalysisPanel({ entryId, hasTransits = false }: AnalysisPanelPro
             {hasTransits && analysis.transitInsights && (
               <div>
                 <h4 className="font-medium mb-2">Transit İçgörüleri</h4>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-foreground">
                   {analysis.transitInsights}
                 </p>
               </div>
@@ -138,7 +138,7 @@ export function AnalysisPanel({ entryId, hasTransits = false }: AnalysisPanelPro
                 <h4 className="font-medium mb-2">Öneriler</h4>
                 <ul className="space-y-2">
                   {analysis.suggestions.map((suggestion, index) => (
-                    <li key={index} className="text-sm text-muted-foreground flex items-start gap-2">
+                    <li key={index} className="text-sm text-foreground flex items-start gap-2">
                       <span className="text-primary mt-1">•</span>
                       <span>{suggestion}</span>
                     </li>
