@@ -134,4 +134,4 @@ npx prisma studio
 - Veritabanı zaten production ortamında (Neon PostgreSQL)
 - Tüm environment variables production değerleri ile ayarlandı
 - Geliştirme için `NEXTAUTH_URL` localhost:3000 olarak ayarlandı
-- Proje Vercel'de deploy edilmiş durumda: https://a-z-horoscope.vercel.app
+- Proje Vercel'de deploy edilmiş durumda: https://azhoroscope.com

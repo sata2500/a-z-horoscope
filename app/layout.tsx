@@ -17,6 +17,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://azhoroscope.com'),
   title: "AZ-Horoscope | Yapay Zeka Destekli Astroloji Platformu",
   description: "Modern astroloji platformu. Gemini AI ile kişiselleştirilmiş burç yorumları ve analizler.",
   keywords: ["burç", "astroloji", "horoscope", "yapay zeka", "gemini"],
@@ -39,6 +40,8 @@ export const metadata: Metadata = {
     title: "AZ-Horoscope",
     description: "Yapay zeka destekli modern astroloji platformu",
     type: "website",
+    url: 'https://azhoroscope.com',
+    siteName: 'AZ-Horoscope',
     images: ['/logo-full.png'],
   },
 }

@@ -105,7 +105,7 @@ export async function GET() {
       developer: "Salih TANRISEVEN",
       email: "salihtanriseven25@gmail.com",
       github: "https://github.com/sata2500/a-z-horoscope",
-      website: "https://a-z-horoscope.vercel.app"
+      website: "https://azhoroscope.com"
     }
   })
 }

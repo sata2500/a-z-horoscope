@@ -105,7 +105,7 @@ async function main() {
   console.log(`   Rol: ${updatedUser.role}`)
 
   console.log('\n🔗 Admin paneline erişmek için:')
-  console.log('   https://a-z-horoscope.vercel.app/admin')
+  console.log('   https://azhoroscope.com/admin')
   console.log('\n💡 Not: Değişikliklerin etkili olması için çıkış yapıp tekrar giriş yapmanız gerekebilir.')
 
   // Tüm admin kullanıcıları listele

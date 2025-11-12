@@ -248,29 +248,29 @@ Proje Vercel'de deploy edilebilir:
 
 ### 1. Tek Burç İçin Günlük Yorum
 ```bash
-curl "https://a-z-horoscope.vercel.app/api/public/horoscope/daily?sign=aries"
+curl "https://azhoroscope.com/api/public/horoscope/daily?sign=aries"
 ```
 
 ### 2. Tüm Burçlar İçin Günlük Yorumlar
 ```bash
-curl -X POST "https://a-z-horoscope.vercel.app/api/public/horoscope/daily" \
+curl -X POST "https://azhoroscope.com/api/public/horoscope/daily" \
   -H "Content-Type: application/json" \
   -d '{"getAllSigns": true}'
 ```
 
 ### 3. Haftalık Yorum
 ```bash
-curl "https://a-z-horoscope.vercel.app/api/public/horoscope/weekly?sign=taurus"
+curl "https://azhoroscope.com/api/public/horoscope/weekly?sign=taurus"
 ```
 
 ### 4. Aylık Yorum
 ```bash
-curl "https://a-z-horoscope.vercel.app/api/public/horoscope/monthly?sign=gemini"
+curl "https://azhoroscope.com/api/public/horoscope/monthly?sign=gemini"
 ```
 
 ### 5. API Bilgileri
 ```bash
-curl "https://a-z-horoscope.vercel.app/api/public"
+curl "https://azhoroscope.com/api/public"
 ```
 
 ---

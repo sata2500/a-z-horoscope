@@ -72,7 +72,7 @@ export async function GET(request: NextRequest) {
 
     const response = await fetch(nominatimUrl.toString(), {
       headers: {
-        'User-Agent': 'AZ-Horoscope/1.0 (https://a-z-horoscope.vercel.app)',
+        'User-Agent': 'AZ-Horoscope/1.0 (https://azhoroscope.com)',
       },
     });
 

@@ -241,7 +241,7 @@ GET /api/geocode?q=New York
 
 **User-Agent:**
 ```
-Az-Horoscope/1.0 (https://a-z-horoscope.vercel.app)
+Az-Horoscope/1.0 (https://azhoroscope.com)
 ```
 
 ### Debounced Search

@@ -134,7 +134,7 @@ export function DailyHoroscopeEmail({
         marginBottom: '30px',
       }}>
         <a 
-          href="https://a-z-horoscope.vercel.app/horoscope" 
+          href="https://azhoroscope.com/horoscope" 
           style={{
             display: 'inline-block',
             padding: '14px 32px',
@@ -171,7 +171,7 @@ export function DailyHoroscopeEmail({
           margin: '0',
         }}>
           <a 
-            href="https://a-z-horoscope.vercel.app/profile" 
+            href="https://azhoroscope.com/profile" 
             style={{ 
               color: '#666',
               textDecoration: 'underline',

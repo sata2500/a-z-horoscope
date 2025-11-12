@@ -46,7 +46,7 @@ export async function sendDailyHoroscope({
 
     // Production'da gerçek e-posta gönder
     const { data, error } = await resend.emails.send({
-      from: 'AZ-Horoscope <noreply@a-z-horoscope.vercel.app>',
+      from: 'AZ-Horoscope <noreply@azhoroscope.com>',
       to: [to],
       subject: `🌟 ${zodiacSignTurkish} Burcu - Günlük Yorumunuz (${date})`,
       react: DailyHoroscopeEmail({
