@@ -1,21 +1,18 @@
-import { NextResponse } from "next/server"
-import { auth } from "@/auth"
-import { prisma } from "@/lib/db"
+import { NextResponse } from "next/server";
+import { prisma } from "@/lib/db";
+import { handleError } from "@/lib/errorHandler";
+import { getCurrentUser } from "@/lib/authUtils";
 
 export async function GET() {
   try {
-    const session = await auth()
-
-    if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      )
+    const user = await getCurrentUser();
+    if (user instanceof NextResponse) {
+      return user;
     }
 
     const favorites = await prisma.favoriteReading.findMany({
       where: {
-        userId: session.user.id,
+        userId: user.id,
       },
       include: {
         reading: true,
@@ -23,20 +20,16 @@ export async function GET() {
       orderBy: {
         createdAt: "desc",
       },
-    })
+    });
 
     return NextResponse.json({
       success: true,
-      data: favorites.map(fav => ({
+      data: favorites.map((fav) => ({
         ...fav.reading,
         favoritedAt: fav.createdAt,
       })),
-    })
+    });
   } catch (error) {
-    console.error("Get favorites error:", error)
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    )
+    return handleError(error);
   }
 }

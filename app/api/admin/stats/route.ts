@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@/auth';
 import { prisma } from '@/lib/db';
+import { handleError } from '@/lib/errorHandler';
+import { getCurrentAdmin } from '@/lib/authUtils';
 
 /**
  * GET /api/admin/stats
@@ -8,13 +9,9 @@ import { prisma } from '@/lib/db';
  */
 export async function GET() {
   try {
-    const session = await auth();
-    
-    if (!session || session.user.role !== 'ADMIN') {
-      return NextResponse.json(
-        { error: 'Yetkisiz erişim' },
-        { status: 401 }
-      );
+    const admin = await getCurrentAdmin();
+    if (admin instanceof NextResponse) {
+      return admin;
     }
 
     // Bugünün başlangıcı
@@ -158,10 +155,6 @@ export async function GET() {
       },
     });
   } catch (error) {
-    console.error('Admin stats error:', error);
-    return NextResponse.json(
-      { error: 'İstatistikler alınırken bir hata oluştu' },
-      { status: 500 }
-    );
+    return handleError(error);
   }
 }
