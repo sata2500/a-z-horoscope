@@ -153,7 +153,14 @@ export async function POST(req: NextRequest) {
     const nextWeekStart = new Date(weekStart)
     nextWeekStart.setDate(weekStart.getDate() + 7)
     
-    const allReadings: Record<string, any> = {}
+    const allReadings: Record<string, {
+      zodiacNameTr: string;
+      zodiacSymbol: string;
+      element: string;
+      planet: string;
+      reading: string;
+      cached: boolean;
+    }> = {}
 
     // Tüm burçlar için haftalık yorum oluştur veya cache'den al
     for (const [sign, info] of Object.entries(zodiacSigns)) {
@@ -208,7 +215,11 @@ export async function POST(req: NextRequest) {
         console.error(`Error generating weekly horoscope for ${sign}:`, error)
         allReadings[sign] = {
           zodiacNameTr: info.nameTr,
-          error: "Haftalık yorum oluşturulamadı"
+          zodiacSymbol: info.symbol,
+          element: info.elementTr,
+          planet: info.planetTr,
+          reading: "Haftalık yorum oluşturulamadı. Lütfen daha sonra tekrar deneyin.",
+          cached: false,
         }
       }
     }

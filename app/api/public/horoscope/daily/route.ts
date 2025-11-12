@@ -147,7 +147,14 @@ export async function POST(req: NextRequest) {
     const tomorrow = new Date(today)
     tomorrow.setDate(tomorrow.getDate() + 1)
 
-    const allReadings: Record<string, any> = {}
+    const allReadings: Record<string, {
+      zodiacNameTr: string;
+      zodiacSymbol: string;
+      element: string;
+      planet: string;
+      reading: string;
+      cached: boolean;
+    }> = {}
 
     // Tüm burçlar için yorum oluştur veya cache'den al
     for (const [sign, info] of Object.entries(zodiacSigns)) {
@@ -208,7 +215,11 @@ export async function POST(req: NextRequest) {
         console.error(`Error generating horoscope for ${sign}:`, error)
         allReadings[sign] = {
           zodiacNameTr: info.nameTr,
-          error: "Yorum oluşturulamadı"
+          zodiacSymbol: info.symbol,
+          element: info.elementTr,
+          planet: info.planetTr,
+          reading: "Yorum oluşturulamadı. Lütfen daha sonra tekrar deneyin.",
+          cached: false,
         }
       }
     }

@@ -4,8 +4,7 @@ import { useState } from "react"
 import ReactMarkdown from "react-markdown"
 import { zodiacSigns, ZodiacSign } from "@/lib/zodiac"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Loader2, Sparkles, Calendar, TrendingUp } from "lucide-react"
 
 /**
@@ -83,7 +82,7 @@ export default function PublicHoroscopePage() {
       </div>
 
       {/* Reading Type Tabs */}
-      <Tabs defaultValue="daily" className="mb-8" onValueChange={(value) => setReadingType(value as any)}>
+      <Tabs defaultValue="daily" className="mb-8" onValueChange={(value) => setReadingType(value as "daily" | "weekly" | "monthly")}>
         <TabsList className="grid w-full max-w-md mx-auto grid-cols-3">
           <TabsTrigger value="daily" className="flex items-center gap-2">
             <Sparkles className="w-4 h-4" />
