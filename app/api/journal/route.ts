@@ -115,15 +115,12 @@ export async function GET(req: NextRequest) {
     const tag = searchParams.get("tag")
     const startDate = searchParams.get("startDate")
     const endDate = searchParams.get("endDate")
-    const search = searchParams.get("search")
-
     // Filtreleme koşulları
     const where: {
       userId: string;
       mood?: number;
       tags?: { has?: string; hasSome?: string[] };
       date?: { gte?: Date; lte?: Date };
-      OR?: Array<{ title?: { contains: string; mode: 'insensitive' }; content?: { contains: string; mode: 'insensitive' } }>;
     } = {
       userId: session.user.id,
     }
@@ -146,13 +143,6 @@ export async function GET(req: NextRequest) {
       if (endDate) {
         where.date.lte = new Date(endDate)
       }
-    }
-
-    if (search) {
-      where.OR = [
-        { title: { contains: search, mode: "insensitive" } },
-        { content: { contains: search, mode: "insensitive" } },
-      ]
     }
 
     // Toplam kayıt sayısı
