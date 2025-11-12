@@ -47,6 +47,11 @@ export function Footer() {
                   Gizlilik Politikası
                 </Link>
               </li>
+              <li>
+                <Link href="/terms" className="text-muted-foreground transition-colors hover:text-primary">
+                  Kullanım Koşulları
+                </Link>
+              </li>
             </ul>
           </div>
 

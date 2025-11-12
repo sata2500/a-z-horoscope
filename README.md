@@ -35,14 +35,19 @@
 
 ## 🚀 Getting Started
 
+This guide will walk you through setting up the project locally. It is designed to be as straightforward as possible, but please open an issue if you encounter any problems.
+
 ### Prerequisites
 
-- Node.js v22.x
-- npm v10.x
-- PostgreSQL database
-- Google Cloud Project (for OAuth and Gemini API)
+- **Node.js:** v22.x or higher
+- **npm:** v10.x or higher
+- **Git:** Version control
+- **PostgreSQL:** A running instance (local or remote)
+- **Google Cloud Project:** Required for Google OAuth and Gemini API.
 
 ### 1. Clone the Repository
+
+First, clone the repository to your local machine:
 
 ```bash
 git clone https://github.com/sata2500/a-z-horoscope.git
@@ -51,25 +56,65 @@ cd a-z-horoscope
 
 ### 2. Install Dependencies
 
+This project uses `npm` for package management. Run the following command to install all dependencies:
+
 ```bash
 npm install
 ```
 
+*Note: During installation, you might encounter errors related to `node-gyp` or C++ build tools. This is often because some dependencies require native compilation. Ensure you have a proper build environment set up.*
+
+**On Windows:**
+```bash
+npm install --global windows-build-tools
+```
+
+**On macOS:**
+Install Xcode Command Line Tools:
+```bash
+xcode-select --install
+```
+
+**On Ubuntu/Debian:**
+```bash
+sudo apt-get install -y build-essential python
+```
+
 ### 3. Set Up Environment Variables
 
-Create a `.env` file in the root of the project and add the following variables:
+Create a `.env` file in the root of the project by copying the example file:
+
+```bash
+cp .env.example .env
+```
+
+Now, fill in the required values in your new `.env` file:
 
 ```env
-DATABASE_URL="..."
+# Database URL (e.g., from Neon or local PostgreSQL)
+DATABASE_URL="postgresql://user:password@host:port/database?sslmode=require"
+
+# Google Gemini API Key
 GOOGLE_API_KEY="..."
+
+# Google OAuth Credentials
 GOOGLE_CLIENT_ID="..."
 GOOGLE_CLIENT_SECRET="..."
+
+# NextAuth Secret
+# Generate one: `openssl rand -base64 32`
 AUTH_SECRET="..."
+
+# Application URL
 NEXTAUTH_URL="http://localhost:3000"
+
+# Email Service (Resend)
 RESEND_API_KEY="..."
 ```
 
 ### 4. Run Database Migrations
+
+This command will sync your database schema with the Prisma schema and generate the Prisma Client.
 
 ```bash
 npm run prisma migrate dev
@@ -77,11 +122,21 @@ npm run prisma migrate dev
 
 ### 5. Start the Development Server
 
+Now you are ready to start the development server:
+
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+Open [http://localhost:3000](http://localhost:3000) in your browser to see the application running.
+
+## 🧪 Running Tests
+
+(Coming Soon) This project will use Jest and React Testing Library for testing. Once configured, you will be able to run tests with:
+
+```bash
+npm test
+```
 
 ## 📚 Documentation
 
@@ -92,7 +147,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to see the a
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please read the [Contributing Guidelines](CONTRIBUTING.md) for more information.
+Contributions are welcome! Please read the [Contributing Guidelines](CONTRIBUTING.md) for more information on how to get started.
 
 ## 📄 License
 

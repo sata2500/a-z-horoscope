@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { db } from "@/lib/db"
 import { calculateTransits } from "@/lib/swisseph"
+import { rateLimit } from "@/lib/rate-limit"
+import { validateRequestBody, journalEntrySchema } from "@/lib/validations"
 
 // POST /api/journal - Yeni günlük oluşturma
 export async function POST(req: NextRequest) {
@@ -15,23 +17,31 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const body = await req.json()
-    const { title, content, mood, tags, date } = body
+    // Rate limiting
+    const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1"
+    const rateLimitResult = rateLimit(ip, {
+      interval: 60000, // 1 minute
+      maxRequests: 10,
+    })
 
-    // Validasyon
-    if (!content || content.trim().length === 0) {
+    if (!rateLimitResult) {
       return NextResponse.json(
-        { error: "İçerik boş olamaz" },
+        { error: "Çok fazla istek. Lütfen daha sonra tekrar deneyin." },
+        { status: 429 }
+      )
+    }
+
+    // Validation
+    const validation = await validateRequestBody(req.clone(), journalEntrySchema)
+    
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: validation.error },
         { status: 400 }
       )
     }
 
-    if (!mood || mood < 1 || mood > 10) {
-      return NextResponse.json(
-        { error: "Ruh hali 1-10 arasında olmalıdır" },
-        { status: 400 }
-      )
-    }
+    const { title, content, mood, tags, date } = validation.data
 
     // O günün transit'lerini hesapla
     const entryDate = date ? new Date(date) : new Date()
