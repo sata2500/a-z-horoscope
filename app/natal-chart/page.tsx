@@ -564,11 +564,12 @@ export default function NatalChartPage() {
                 </CardContent>
               </Card>
 
-              {/* Planets and Houses */}
+              {/* Planets, Houses and AI Analysis */}
               <Tabs defaultValue="planets" className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
+                <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="planets">Gezegenler</TabsTrigger>
                   <TabsTrigger value="houses">Evler</TabsTrigger>
+                  <TabsTrigger value="analysis">AI Analizi</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="planets" className="space-y-4">
@@ -631,27 +632,39 @@ export default function NatalChartPage() {
                     </CardContent>
                   </Card>
                 </TabsContent>
-              </Tabs>
 
-              {/* AI Analysis */}
-              {chartData.analysis && (
-                <Card className="border-purple-200 dark:border-purple-800">
-                  <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20">
-                    <CardTitle className="flex items-center gap-2">
-                      <Sparkles className="h-6 w-6 text-purple-600 dark:text-purple-400" />
-                      AI Doğum Haritası Analizi
-                    </CardTitle>
-                    <CardDescription>
-                      Gemini AI tarafından oluşturulan kişiselleştirilmiş analiz
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="pt-6">
-                    <div className="prose dark:prose-invert max-w-none">
-                      <ReactMarkdown>{chartData.analysis}</ReactMarkdown>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
+                <TabsContent value="analysis" className="space-y-4">
+                  {chartData.analysis ? (
+                    <Card className="border-purple-200 dark:border-purple-800">
+                      <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20">
+                        <CardTitle className="flex items-center gap-2">
+                          <Sparkles className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                          AI Doğum Haritası Analizi
+                        </CardTitle>
+                        <CardDescription>
+                          Gemini AI tarafından oluşturulan kişiselleştirilmiş analiz
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="pt-6">
+                        <div className="prose dark:prose-invert max-w-none">
+                          <ReactMarkdown>{chartData.analysis}</ReactMarkdown>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ) : (
+                    <Card>
+                      <CardContent className="pt-6">
+                        <div className="flex flex-col items-center justify-center min-h-[200px] text-center">
+                          <Sparkles className="h-12 w-12 text-muted-foreground mb-4" />
+                          <p className="text-muted-foreground">
+                            AI analizi oluşturuluyor...
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+                </TabsContent>
+              </Tabs>
             </div>
           )}
         </div>
