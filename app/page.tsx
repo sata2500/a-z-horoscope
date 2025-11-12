@@ -32,7 +32,7 @@ export default function HomePage() {
                 </Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
-                <Link href="/horoscope">Burçları Keşfet</Link>
+                <Link href="/public-horoscope">Ücretsiz Burç Yorumları</Link>
               </Button>
             </div>
           </div>

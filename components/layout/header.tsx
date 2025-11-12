@@ -34,6 +34,9 @@ export function Header() {
           <Link href="/" className="text-sm font-medium transition-colors hover:text-primary">
             Ana Sayfa
           </Link>
+          <Link href="/public-horoscope" className="text-sm font-medium transition-colors hover:text-primary">
+            Burç Yorumları
+          </Link>
           {session && (
             <>
               <Link href="/dashboard" className="text-sm font-medium transition-colors hover:text-primary">
