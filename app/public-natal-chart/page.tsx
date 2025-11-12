@@ -17,7 +17,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Loader2, Sparkles, AlertCircle, MapPin, Calendar, Clock } from "lucide-react"
+import { Loader2, Sparkles, AlertCircle, Calendar, Clock } from "lucide-react"
+import { CitySearch } from "@/components/geocode/city-search"
 
 interface PlanetPosition {
   planetName: string
@@ -66,6 +67,12 @@ export default function PublicNatalChartPage() {
   const [birthPlace, setBirthPlace] = useState("")
   const [latitude, setLatitude] = useState("")
   const [longitude, setLongitude] = useState("")
+
+  const handleLocationSelect = (location: { name: string; latitude: number; longitude: number }) => {
+    setBirthPlace(location.name)
+    setLatitude(location.latitude.toString())
+    setLongitude(location.longitude.toString())
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -180,19 +187,11 @@ export default function PublicNatalChartPage() {
                   </p>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="birthPlace">
-                    <MapPin className="inline w-4 h-4 mr-2" />
-                    Doğum Yeri (Opsiyonel)
-                  </Label>
-                  <Input
-                    id="birthPlace"
-                    type="text"
-                    placeholder="İstanbul, Türkiye"
-                    value={birthPlace}
-                    onChange={(e) => setBirthPlace(e.target.value)}
-                  />
-                </div>
+                {/* City Search Component */}
+                <CitySearch
+                  onLocationSelect={handleLocationSelect}
+                  defaultValue={birthPlace}
+                />
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
@@ -222,16 +221,7 @@ export default function PublicNatalChartPage() {
                 </div>
 
                 <p className="text-xs text-muted-foreground">
-                  Koordinatlarınızı{" "}
-                  <a
-                    href="https://www.google.com/maps"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary hover:underline"
-                  >
-                    Google Maps
-                  </a>
-                  'ten bulabilirsiniz
+                  Koordinatlar şehir seçimiyle otomatik doldurulur veya manuel girebilirsiniz
                 </p>
 
                 <Button type="submit" className="w-full" disabled={loading}>
