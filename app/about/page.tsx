@@ -126,7 +126,7 @@ export default function AboutPage() {
               <Link href="/login">Giriş Yap</Link>
             </Button>
             <Button asChild variant="outline" size="lg">
-              <Link href="/horoscope">Burçları Keşfet</Link>
+              <Link href="/public-horoscope">Burçları Keşfet</Link>
             </Button>
           </div>
         </div>

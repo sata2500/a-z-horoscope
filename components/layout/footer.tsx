@@ -22,7 +22,7 @@ export function Footer() {
             <h3 className="mb-4 text-sm font-semibold">Keşfet</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/horoscope" className="text-muted-foreground transition-colors hover:text-primary">
+                <Link href="/public-horoscope" className="text-muted-foreground transition-colors hover:text-primary">
                   Burçlar
                 </Link>
               </li>

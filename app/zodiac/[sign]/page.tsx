@@ -168,7 +168,7 @@ export default async function ZodiacDetailPage({ params }: PageProps) {
 
       {/* CTA */}
       <div className="text-center">
-        <Link href="/horoscope">
+        <Link href="/public-horoscope">
           <Button size="lg" className="gap-2">
             <Sparkles className="size-5" />
             Burç Yorumunu Al

@@ -4,8 +4,9 @@ import { useState } from "react"
 import ReactMarkdown from "react-markdown"
 import { zodiacSigns, ZodiacSign } from "@/lib/zodiac"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Loader2, Sparkles, Calendar, TrendingUp } from "lucide-react"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import { Loader2, Sparkles, Calendar, TrendingUp, Heart } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 /**
  * Public Horoscope Page
@@ -15,7 +16,8 @@ import { Loader2, Sparkles, Calendar, TrendingUp } from "lucide-react"
  */
 export default function PublicHoroscopePage() {
   const [selectedSign, setSelectedSign] = useState<ZodiacSign | null>(null)
-  const [readingType, setReadingType] = useState<"daily" | "weekly" | "monthly">("daily")
+  const [selectedSign2, setSelectedSign2] = useState<ZodiacSign | null>(null)
+  const [readingType, setReadingType] = useState<"daily" | "weekly" | "monthly" | "compatibility">("daily")
   const [reading, setReading] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -46,7 +48,35 @@ export default function PublicHoroscopePage() {
     }
   }
 
-  const getReadingTypeLabel = (type: "daily" | "weekly" | "monthly") => {
+  const handleGetCompatibility = async () => {
+    if (!selectedSign || !selectedSign2) {
+      setError("Lütfen iki burç seçin")
+      return
+    }
+
+    setLoading(true)
+    setError(null)
+    setReading(null)
+    setCached(false)
+    setReadingType("compatibility")
+
+    try {
+      const response = await fetch(`/api/public/horoscope/compatibility?sign1=${selectedSign}&sign2=${selectedSign2}`)
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || "Uyumluluk analizi alınamadı")
+      }
+
+      setReading(data.data.analysis)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Bir hata oluştu")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const getReadingTypeLabel = (type: "daily" | "weekly" | "monthly" | "compatibility") => {
     switch (type) {
       case "daily":
         return "Günlük"
@@ -54,10 +84,12 @@ export default function PublicHoroscopePage() {
         return "Haftalık"
       case "monthly":
         return "Aylık"
+      case "compatibility":
+        return "Uyumluluk"
     }
   }
 
-  const getReadingTypeIcon = (type: "daily" | "weekly" | "monthly") => {
+  const getReadingTypeIcon = (type: "daily" | "weekly" | "monthly" | "compatibility") => {
     switch (type) {
       case "daily":
         return <Sparkles className="w-5 h-5" />
@@ -65,6 +97,8 @@ export default function PublicHoroscopePage() {
         return <Calendar className="w-5 h-5" />
       case "monthly":
         return <TrendingUp className="w-5 h-5" />
+      case "compatibility":
+        return <Heart className="w-5 h-5" />
     }
   }
 
@@ -82,8 +116,12 @@ export default function PublicHoroscopePage() {
       </div>
 
       {/* Reading Type Tabs */}
-      <Tabs defaultValue="daily" className="mb-8" onValueChange={(value) => setReadingType(value as "daily" | "weekly" | "monthly")}>
-        <TabsList className="grid w-full max-w-md mx-auto grid-cols-3">
+      <Tabs defaultValue="daily" className="mb-8" onValueChange={(value) => {
+        setReadingType(value as "daily" | "weekly" | "monthly" | "compatibility")
+        setReading(null)
+        setError(null)
+      }}>
+        <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-4">
           <TabsTrigger value="daily" className="flex items-center gap-2">
             <Sparkles className="w-4 h-4" />
             Günlük
@@ -96,37 +134,172 @@ export default function PublicHoroscopePage() {
             <TrendingUp className="w-4 h-4" />
             Aylık
           </TabsTrigger>
+          <TabsTrigger value="compatibility" className="flex items-center gap-2">
+            <Heart className="w-4 h-4" />
+            Uyumluluk
+          </TabsTrigger>
         </TabsList>
-      </Tabs>
 
-      {/* Zodiac Signs Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
-        {Object.entries(zodiacSigns).map(([sign, info]) => (
-          <Card
-            key={sign}
-            className={`cursor-pointer transition-all hover:shadow-lg hover:scale-105 ${
-              selectedSign === sign ? "ring-2 ring-primary" : ""
-            }`}
-            onClick={() => handleGetReading(sign as ZodiacSign, readingType)}
-          >
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="text-lg">{info.nameTr}</CardTitle>
-                  <CardDescription className="text-xs">{info.dateRangeTr}</CardDescription>
-                </div>
-                <span className="text-3xl">{info.symbol}</span>
-              </div>
+        {/* Daily, Weekly, Monthly Tabs */}
+        <TabsContent value="daily" className="mt-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
+            {Object.entries(zodiacSigns).map(([sign, info]) => (
+              <Card
+                key={sign}
+                className={`cursor-pointer transition-all hover:shadow-lg hover:scale-105 ${
+                  selectedSign === sign && readingType === "daily" ? "ring-2 ring-primary" : ""
+                }`}
+                onClick={() => handleGetReading(sign as ZodiacSign, "daily")}
+              >
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle className="text-lg">{info.nameTr}</CardTitle>
+                      <CardDescription className="text-xs">{info.dateRangeTr}</CardDescription>
+                    </div>
+                    <span className="text-3xl">{info.symbol}</span>
+                  </div>
+                </CardHeader>
+                <CardContent className="pb-4">
+                  <div className="flex gap-2 text-xs text-muted-foreground">
+                    <span className="px-2 py-1 bg-secondary rounded">{info.elementTr}</span>
+                    <span className="px-2 py-1 bg-secondary rounded">{info.planetTr}</span>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="weekly" className="mt-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
+            {Object.entries(zodiacSigns).map(([sign, info]) => (
+              <Card
+                key={sign}
+                className={`cursor-pointer transition-all hover:shadow-lg hover:scale-105 ${
+                  selectedSign === sign && readingType === "weekly" ? "ring-2 ring-primary" : ""
+                }`}
+                onClick={() => handleGetReading(sign as ZodiacSign, "weekly")}
+              >
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle className="text-lg">{info.nameTr}</CardTitle>
+                      <CardDescription className="text-xs">{info.dateRangeTr}</CardDescription>
+                    </div>
+                    <span className="text-3xl">{info.symbol}</span>
+                  </div>
+                </CardHeader>
+                <CardContent className="pb-4">
+                  <div className="flex gap-2 text-xs text-muted-foreground">
+                    <span className="px-2 py-1 bg-secondary rounded">{info.elementTr}</span>
+                    <span className="px-2 py-1 bg-secondary rounded">{info.planetTr}</span>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="monthly" className="mt-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
+            {Object.entries(zodiacSigns).map(([sign, info]) => (
+              <Card
+                key={sign}
+                className={`cursor-pointer transition-all hover:shadow-lg hover:scale-105 ${
+                  selectedSign === sign && readingType === "monthly" ? "ring-2 ring-primary" : ""
+                }`}
+                onClick={() => handleGetReading(sign as ZodiacSign, "monthly")}
+              >
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle className="text-lg">{info.nameTr}</CardTitle>
+                      <CardDescription className="text-xs">{info.dateRangeTr}</CardDescription>
+                    </div>
+                    <span className="text-3xl">{info.symbol}</span>
+                  </div>
+                </CardHeader>
+                <CardContent className="pb-4">
+                  <div className="flex gap-2 text-xs text-muted-foreground">
+                    <span className="px-2 py-1 bg-secondary rounded">{info.elementTr}</span>
+                    <span className="px-2 py-1 bg-secondary rounded">{info.planetTr}</span>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        {/* Compatibility Tab */}
+        <TabsContent value="compatibility" className="mt-8">
+          <Card className="max-w-4xl mx-auto mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Heart className="w-6 h-6" />
+                Burç Uyumluluk Analizi
+              </CardTitle>
+              <CardDescription>
+                İki burç arasındaki uyumluluğu keşfedin
+              </CardDescription>
             </CardHeader>
-            <CardContent className="pb-4">
-              <div className="flex gap-2 text-xs text-muted-foreground">
-                <span className="px-2 py-1 bg-secondary rounded">{info.elementTr}</span>
-                <span className="px-2 py-1 bg-secondary rounded">{info.planetTr}</span>
+            <CardContent className="space-y-6">
+              <div>
+                <label className="mb-3 block text-sm font-medium">İlk Burç</label>
+                <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                  {Object.entries(zodiacSigns).map(([sign, info]) => (
+                    <Button
+                      key={sign}
+                      variant={selectedSign === sign ? "default" : "outline"}
+                      className="flex flex-col items-center gap-1 h-auto py-3"
+                      onClick={() => setSelectedSign(sign as ZodiacSign)}
+                    >
+                      <span className="text-2xl">{info.symbol}</span>
+                      <span className="text-xs">{info.nameTr}</span>
+                    </Button>
+                  ))}
+                </div>
               </div>
+
+              <div>
+                <label className="mb-3 block text-sm font-medium">İkinci Burç</label>
+                <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                  {Object.entries(zodiacSigns).map(([sign, info]) => (
+                    <Button
+                      key={sign}
+                      variant={selectedSign2 === sign ? "default" : "outline"}
+                      className="flex flex-col items-center gap-1 h-auto py-3"
+                      onClick={() => setSelectedSign2(sign as ZodiacSign)}
+                    >
+                      <span className="text-2xl">{info.symbol}</span>
+                      <span className="text-xs">{info.nameTr}</span>
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              <Button
+                onClick={handleGetCompatibility}
+                disabled={!selectedSign || !selectedSign2 || loading}
+                className="w-full"
+                size="lg"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-2 w-5 h-5 animate-spin" />
+                    Analiz Ediliyor...
+                  </>
+                ) : (
+                  <>
+                    <Heart className="mr-2 w-5 h-5" />
+                    Uyumluluk Analizi Al
+                  </>
+                )}
+              </Button>
             </CardContent>
           </Card>
-        ))}
-      </div>
+        </TabsContent>
+      </Tabs>
 
       {/* Reading Display */}
       {(loading || reading || error) && (
@@ -135,12 +308,24 @@ export default function PublicHoroscopePage() {
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-2xl flex items-center gap-2">
-                  {selectedSign && zodiacSigns[selectedSign].symbol}{" "}
-                  {selectedSign && zodiacSigns[selectedSign].nameTr}
+                  {readingType === "compatibility" ? (
+                    <>
+                      {selectedSign && zodiacSigns[selectedSign].symbol}{" "}
+                      {selectedSign && zodiacSigns[selectedSign].nameTr}
+                      {" & "}
+                      {selectedSign2 && zodiacSigns[selectedSign2].symbol}{" "}
+                      {selectedSign2 && zodiacSigns[selectedSign2].nameTr}
+                    </>
+                  ) : (
+                    <>
+                      {selectedSign && zodiacSigns[selectedSign].symbol}{" "}
+                      {selectedSign && zodiacSigns[selectedSign].nameTr}
+                    </>
+                  )}
                 </CardTitle>
                 <CardDescription className="flex items-center gap-2 mt-2">
                   {getReadingTypeIcon(readingType)}
-                  {getReadingTypeLabel(readingType)} Burç Yorumu
+                  {getReadingTypeLabel(readingType)} {readingType === "compatibility" ? "Analizi" : "Burç Yorumu"}
                   {cached && (
                     <span className="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded">
                       Önbellekten
@@ -148,7 +333,7 @@ export default function PublicHoroscopePage() {
                   )}
                 </CardDescription>
               </div>
-              {selectedSign && (
+              {selectedSign && readingType !== "compatibility" && (
                 <div className="text-right text-sm text-muted-foreground">
                   <div>{zodiacSigns[selectedSign].elementTr} Elementi</div>
                   <div>{zodiacSigns[selectedSign].planetTr} Gezegeni</div>
@@ -160,7 +345,9 @@ export default function PublicHoroscopePage() {
             {loading && (
               <div className="flex items-center justify-center py-12">
                 <Loader2 className="w-8 h-8 animate-spin text-primary" />
-                <span className="ml-3 text-lg">Profesyonel yorum hazırlanıyor...</span>
+                <span className="ml-3 text-lg">
+                  {readingType === "compatibility" ? "Uyumluluk analizi hazırlanıyor..." : "Profesyonel yorum hazırlanıyor..."}
+                </span>
               </div>
             )}
 
@@ -214,8 +401,10 @@ export default function PublicHoroscopePage() {
                 <div className="mt-8 pt-6 border-t border-border">
                   <p className="text-sm text-muted-foreground flex items-center gap-2">
                     <Sparkles className="w-4 h-4" />
-                    Bu yorum, Swiss Ephemeris astronomik verileri ve Gemini AI kullanılarak
-                    gerçek gezegen pozisyonlarına dayalı olarak oluşturulmuştur.
+                    {readingType === "compatibility" 
+                      ? "Bu analiz, profesyonel astroloji bilgisi ve Gemini AI kullanılarak oluşturulmuştur."
+                      : "Bu yorum, Swiss Ephemeris astronomik verileri ve Gemini AI kullanılarak gerçek gezegen pozisyonlarına dayalı olarak oluşturulmuştur."
+                    }
                   </p>
                 </div>
               </div>
@@ -260,7 +449,7 @@ export default function PublicHoroscopePage() {
             
             <div className="text-center pt-4">
               <p className="text-sm text-muted-foreground">
-                Yukarıdan burç seçimi yaparak başlayın 👆
+                Yukarıdan bir sekme seçerek başlayın 👆
               </p>
             </div>
           </CardContent>

@@ -1,6 +1,17 @@
 
 > a-z-horoscope@0.1.0 build
-> next build
+> prisma generate && next build
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma config detected, skipping environment variable loading.
+Prisma schema loaded from prisma/schema.prisma
+
+✔ Generated Prisma Client (v6.19.0) to ./node_modules/@prisma/client in 135ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
 
 Attention: Next.js now collects completely anonymous telemetry regarding usage.
 This information is used to shape Next.js' roadmap and prioritize features.
@@ -10,56 +21,71 @@ https://nextjs.org/telemetry
    ▲ Next.js 16.0.1 (Turbopack)
    - Environments: .env
 
- ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
    Creating an optimized production build ...
- ✓ Compiled successfully in 3.5s
-   Running TypeScript ...
-Failed to compile.
-
-./app/layout.tsx:23:41
-Type error: Object literal may only specify known properties, and 'email' does not exist in type 'Author'.
-
-[0m [90m 21 |[39m   description[33m:[39m [32m"Modern astroloji platformu. Gemini AI ile kişiselleştirilmiş burç yorumları ve analizler."[39m[33m,[39m
- [90m 22 |[39m   keywords[33m:[39m [[32m"burç"[39m[33m,[39m [32m"astroloji"[39m[33m,[39m [32m"horoscope"[39m[33m,[39m [32m"yapay zeka"[39m[33m,[39m [32m"gemini"[39m][33m,[39m
-[31m[1m>[22m[39m[90m 23 |[39m   authors[33m:[39m [{ name[33m:[39m [32m"Salih TANRISEVEN"[39m[33m,[39m email[33m:[39m [32m"salihtanriseven25@gmail.com"[39m }][33m,[39m
- [90m    |[39m                                         [31m[1m^[22m[39m
- [90m 24 |[39m   openGraph[33m:[39m {
- [90m 25 |[39m     title[33m:[39m [32m"Az-Horoscope"[39m[33m,[39m
- [90m 26 |[39m     description[33m:[39m [32m"Yapay zeka destekli modern astroloji platformu"[39m[33m,[39m[0m
-Next.js build worker exited with code: 1 and signal: null
-
-> a-z-horoscope@0.1.0 build
-> next build
-
-   ▲ Next.js 16.0.1 (Turbopack)
-   - Environments: .env
-
- ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
-   Creating an optimized production build ...
- ✓ Compiled successfully in 3.3s
+ ✓ Compiled successfully in 6.8s
    Running TypeScript ...
    Collecting page data ...
-   Generating static pages (0/10) ...
-   Generating static pages (2/10) 
-   Generating static pages (4/10) 
-   Generating static pages (7/10) 
- ✓ Generating static pages (10/10) in 696.4ms
+   Generating static pages (0/55) ...
+   Generating static pages (13/55) 
+   Generating static pages (27/55) 
+   Generating static pages (41/55) 
+ ✓ Generating static pages (55/55) in 900.5ms
    Finalizing page optimization ...
 
 Route (app)
-┌ ○ /
+┌ ƒ /
 ├ ○ /_not-found
+├ ○ /about
+├ ƒ /admin
+├ ƒ /admin/stats
+├ ƒ /admin/users
+├ ƒ /api/admin/stats
+├ ƒ /api/admin/users
+├ ƒ /api/astrology/natal-chart
+├ ƒ /api/astrology/natal-chart-analysis
+├ ƒ /api/astrology/transit
 ├ ƒ /api/auth/[...nextauth]
+├ ƒ /api/favorites
+├ ƒ /api/favorites/toggle
+├ ƒ /api/geocode
 ├ ƒ /api/horoscope/compatibility
 ├ ƒ /api/horoscope/daily
+├ ƒ /api/horoscope/history
+├ ƒ /api/horoscope/monthly
+├ ƒ /api/horoscope/weekly
+├ ƒ /api/journal
+├ ƒ /api/journal/[id]
+├ ƒ /api/journal/analyze
+├ ƒ /api/public
+├ ƒ /api/public/horoscope/compatibility
+├ ƒ /api/public/horoscope/daily
+├ ƒ /api/public/horoscope/monthly
+├ ƒ /api/public/horoscope/weekly
+├ ƒ /api/public/natal-chart
+├ ƒ /api/user/natal-chart
+├ ƒ /api/user/notification-settings
+├ ƒ /api/user/update-zodiac
 ├ ƒ /dashboard
-├ ○ /horoscope
+├ ƒ /journal
+├ ƒ /journal/[id]
+├ ƒ /journal/[id]/edit
+├ ƒ /journal/new
 ├ ○ /login
-└ ƒ /profile
+├ ○ /natal-chart
+├ ○ /privacy
+├ ○ /profile
+├ ○ /public-horoscope
+├ ○ /public-natal-chart
+├ ○ /terms
+├ ○ /zodiac
+└ ● /zodiac/[sign]
+  ├ /zodiac/aries
+  ├ /zodiac/taurus
+  ├ /zodiac/gemini
+  └ [+9 more paths]
 
-
-ƒ Proxy (Middleware)
 
 ○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
 ƒ  (Dynamic)  server-rendered on demand
 

@@ -56,7 +56,7 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent>
             <Button asChild className="w-full">
-              <Link href="/horoscope">
+              <Link href="/public-horoscope">
                 Yorumu Gör
               </Link>
             </Button>
