@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import ReactMarkdown from "react-markdown"
 import { zodiacSigns, ZodiacSign } from "@/lib/zodiac"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -19,11 +20,13 @@ export default function PublicHoroscopePage() {
   const [reading, setReading] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [cached, setCached] = useState(false)
 
   const handleGetReading = async (sign: ZodiacSign, type: "daily" | "weekly" | "monthly") => {
     setLoading(true)
     setError(null)
     setReading(null)
+    setCached(false)
     setSelectedSign(sign)
     setReadingType(type)
 
@@ -36,6 +39,7 @@ export default function PublicHoroscopePage() {
       }
 
       setReading(data.data.reading)
+      setCached(data.data.cached || false)
     } catch (err) {
       setError(err instanceof Error ? err.message : "Bir hata oluştu")
     } finally {
@@ -138,6 +142,11 @@ export default function PublicHoroscopePage() {
                 <CardDescription className="flex items-center gap-2 mt-2">
                   {getReadingTypeIcon(readingType)}
                   {getReadingTypeLabel(readingType)} Burç Yorumu
+                  {cached && (
+                    <span className="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded">
+                      Önbellekten
+                    </span>
+                  )}
                 </CardDescription>
               </div>
               {selectedSign && (
@@ -165,7 +174,43 @@ export default function PublicHoroscopePage() {
 
             {reading && (
               <div className="prose prose-lg dark:prose-invert max-w-none">
-                <div className="whitespace-pre-wrap leading-relaxed">{reading}</div>
+                {/* Markdown rendering with proper dark mode text color */}
+                <div className="text-foreground leading-relaxed">
+                  <ReactMarkdown
+                    components={{
+                      // Override default styles to ensure proper dark mode
+                      p: ({ children }) => (
+                        <p className="mb-4 text-foreground">{children}</p>
+                      ),
+                      strong: ({ children }) => (
+                        <strong className="font-bold text-foreground">{children}</strong>
+                      ),
+                      em: ({ children }) => (
+                        <em className="italic text-foreground">{children}</em>
+                      ),
+                      h1: ({ children }) => (
+                        <h1 className="text-2xl font-bold mb-4 text-foreground">{children}</h1>
+                      ),
+                      h2: ({ children }) => (
+                        <h2 className="text-xl font-bold mb-3 text-foreground">{children}</h2>
+                      ),
+                      h3: ({ children }) => (
+                        <h3 className="text-lg font-bold mb-2 text-foreground">{children}</h3>
+                      ),
+                      ul: ({ children }) => (
+                        <ul className="list-disc list-inside mb-4 text-foreground">{children}</ul>
+                      ),
+                      ol: ({ children }) => (
+                        <ol className="list-decimal list-inside mb-4 text-foreground">{children}</ol>
+                      ),
+                      li: ({ children }) => (
+                        <li className="mb-1 text-foreground">{children}</li>
+                      ),
+                    }}
+                  >
+                    {reading}
+                  </ReactMarkdown>
+                </div>
                 
                 <div className="mt-8 pt-6 border-t border-border">
                   <p className="text-sm text-muted-foreground flex items-center gap-2">

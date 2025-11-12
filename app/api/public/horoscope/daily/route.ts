@@ -1,12 +1,15 @@
 import { NextRequest, NextResponse } from "next/server"
 import { generateDailyHoroscope } from "@/lib/gemini"
 import { zodiacSigns, ZodiacSign } from "@/lib/zodiac"
+import { prisma } from "@/lib/db"
 
 /**
  * Public API - Giriş yapmamış kullanıcılar için günlük burç yorumu
  * 
  * Bu endpoint, Swiss Ephemeris verilerini kullanarak Gemini AI ile
  * her burç için profesyonel günlük yorumlar oluşturur.
+ * 
+ * Cache sistemi: Aynı gün için aynı burç yorumu tekrar oluşturulmaz.
  * 
  * Kullanım: GET /api/public/horoscope/daily?sign=aries
  */
@@ -27,12 +30,67 @@ export async function GET(req: NextRequest) {
     }
 
     const zodiacInfo = zodiacSigns[zodiacSign as ZodiacSign]
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    
+    const tomorrow = new Date(today)
+    tomorrow.setDate(tomorrow.getDate() + 1)
 
-    // Gemini AI ile günlük yorum oluştur
-    // Swiss Ephemeris verileri otomatik olarak generateDailyHoroscope içinde kullanılıyor
+    // Cache'de bugün için yorum var mı kontrol et
+    const cachedReading = await prisma.publicHoroscopeCache.findFirst({
+      where: {
+        zodiacSign: zodiacSign,
+        readingType: "daily",
+        date: {
+          gte: today,
+          lt: tomorrow,
+        },
+        expiresAt: {
+          gt: new Date(), // Henüz expire olmamış
+        },
+      },
+    })
+
+    if (cachedReading) {
+      // Cache'den döndür
+      return NextResponse.json({
+        success: true,
+        data: {
+          zodiacSign: zodiacSign,
+          zodiacNameTr: zodiacInfo.nameTr,
+          zodiacSymbol: zodiacInfo.symbol,
+          element: zodiacInfo.elementTr,
+          planet: zodiacInfo.planetTr,
+          date: cachedReading.date.toISOString(),
+          dateFormatted: cachedReading.date.toLocaleDateString('tr-TR', { 
+            day: 'numeric', 
+            month: 'long', 
+            year: 'numeric' 
+          }),
+          reading: cachedReading.content,
+          readingType: "daily",
+          source: "Swiss Ephemeris + Gemini AI",
+          cached: true,
+        }
+      })
+    }
+
+    // Cache'de yok, yeni yorum oluştur
     const reading = await generateDailyHoroscope(zodiacSign, zodiacInfo)
 
-    const today = new Date()
+    // Cache'e kaydet (yarın gece yarısına kadar geçerli)
+    const expiresAt = new Date(tomorrow)
+    expiresAt.setHours(0, 0, 0, 0)
+
+    await prisma.publicHoroscopeCache.create({
+      data: {
+        zodiacSign: zodiacSign,
+        readingType: "daily",
+        content: reading,
+        date: today,
+        expiresAt: expiresAt,
+      },
+    })
     
     return NextResponse.json({
       success: true,
@@ -50,7 +108,8 @@ export async function GET(req: NextRequest) {
         }),
         reading: reading,
         readingType: "daily",
-        source: "Swiss Ephemeris + Gemini AI"
+        source: "Swiss Ephemeris + Gemini AI",
+        cached: false,
       }
     })
   } catch (error) {
@@ -83,18 +142,67 @@ export async function POST(req: NextRequest) {
     }
 
     const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    
+    const tomorrow = new Date(today)
+    tomorrow.setDate(tomorrow.getDate() + 1)
+
     const allReadings: Record<string, any> = {}
 
-    // Tüm burçlar için yorum oluştur
+    // Tüm burçlar için yorum oluştur veya cache'den al
     for (const [sign, info] of Object.entries(zodiacSigns)) {
       try {
-        const reading = await generateDailyHoroscope(sign, info)
-        allReadings[sign] = {
-          zodiacNameTr: info.nameTr,
-          zodiacSymbol: info.symbol,
-          element: info.elementTr,
-          planet: info.planetTr,
-          reading: reading
+        // Cache'de var mı kontrol et
+        const cachedReading = await prisma.publicHoroscopeCache.findFirst({
+          where: {
+            zodiacSign: sign,
+            readingType: "daily",
+            date: {
+              gte: today,
+              lt: tomorrow,
+            },
+            expiresAt: {
+              gt: new Date(),
+            },
+          },
+        })
+
+        if (cachedReading) {
+          // Cache'den al
+          allReadings[sign] = {
+            zodiacNameTr: info.nameTr,
+            zodiacSymbol: info.symbol,
+            element: info.elementTr,
+            planet: info.planetTr,
+            reading: cachedReading.content,
+            cached: true,
+          }
+        } else {
+          // Yeni yorum oluştur
+          const reading = await generateDailyHoroscope(sign, info)
+          
+          // Cache'e kaydet
+          const expiresAt = new Date(tomorrow)
+          expiresAt.setHours(0, 0, 0, 0)
+
+          await prisma.publicHoroscopeCache.create({
+            data: {
+              zodiacSign: sign,
+              readingType: "daily",
+              content: reading,
+              date: today,
+              expiresAt: expiresAt,
+            },
+          })
+
+          allReadings[sign] = {
+            zodiacNameTr: info.nameTr,
+            zodiacSymbol: info.symbol,
+            element: info.elementTr,
+            planet: info.planetTr,
+            reading: reading,
+            cached: false,
+          }
         }
       } catch (error) {
         console.error(`Error generating horoscope for ${sign}:`, error)

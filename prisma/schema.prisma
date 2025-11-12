@@ -110,6 +110,22 @@ model FavoriteReading {
   @@map("favorite_readings")
 }
 
+// Public Horoscope Cache - Giriş yapmamış kullanıcılar için cache
+model PublicHoroscopeCache {
+  id          String   @id @default(cuid())
+  zodiacSign  String   @map("zodiac_sign")
+  readingType String   @map("reading_type") // "daily", "weekly", "monthly"
+  content     String   @db.Text
+  date        DateTime // Yorum için geçerli tarih (günlük için gün, haftalık için hafta başı, aylık için ay başı)
+  createdAt   DateTime @default(now()) @map("created_at")
+  expiresAt   DateTime @map("expires_at") // Cache'in geçerlilik süresi
+
+  @@unique([zodiacSign, readingType, date])
+  @@index([zodiacSign, readingType, date])
+  @@index([expiresAt])
+  @@map("public_horoscope_cache")
+}
+
 // Journal models
 model JournalEntry {
   id          String   @id @default(cuid())
