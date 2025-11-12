@@ -58,8 +58,13 @@ export function Footer() {
           <div>
             <h3 className="mb-4 text-sm font-semibold">İletişim</h3>
             <ul className="space-y-2 text-sm">
-              <li className="text-muted-foreground">
-                salihtanriseven25@gmail.com
+              <li>
+                <a 
+                  href="mailto:info@azhoroscope.com"
+                  className="text-muted-foreground transition-colors hover:text-primary"
+                >
+                  info@azhoroscope.com
+                </a>
               </li>
               <li>
                 <a 

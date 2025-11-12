@@ -109,7 +109,7 @@ export default function TermsPage() {
           Kullanım Koşullarımız hakkında sorularınız varsa, lütfen bizimle iletişime geçin:
         </p>
         <ul className="text-foreground dark:text-gray-200">
-          <li>E-posta: <Link href="mailto:support@azhoroscope.com" className="text-primary hover:underline dark:text-blue-400">support@azhoroscope.com</Link></li>
+          <li>E-posta: <Link href="mailto:info@azhoroscope.com" className="text-primary hover:underline dark:text-blue-400">info@azhoroscope.com</Link></li>
           <li>Web: <Link href="/about" className="text-primary hover:underline dark:text-blue-400">Hakkımızda</Link></li>
         </ul>
 

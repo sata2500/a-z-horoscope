@@ -105,7 +105,7 @@ export default function PrivacyPage() {
           <li><strong className="text-foreground dark:text-white font-bold">İtiraz Hakkı:</strong> Veri işleme faaliyetlerine itiraz edebilirsiniz.</li>
         </ul>
         <p className="text-foreground dark:text-gray-200">
-          Bu haklarınızı kullanmak için <Link href="mailto:support@azhoroscope.com" className="text-primary hover:underline dark:text-blue-400">support@azhoroscope.com</Link> adresinden bizimle iletişime geçebilirsiniz.
+          Bu haklarınızı kullanmak için <Link href="mailto:info@azhoroscope.com" className="text-primary hover:underline dark:text-blue-400">info@azhoroscope.com</Link> adresinden bizimle iletişime geçebilirsiniz.
         </p>
 
         <h2 className="text-foreground dark:text-white">8. Çocukların Gizliliği</h2>
@@ -123,7 +123,7 @@ export default function PrivacyPage() {
           Gizlilik Politikamız hakkında sorularınız varsa, lütfen bizimle iletişime geçin:
         </p>
         <ul className="text-foreground dark:text-gray-200">
-          <li>E-posta: <Link href="mailto:support@azhoroscope.com" className="text-primary hover:underline dark:text-blue-400">support@azhoroscope.com</Link></li>
+          <li>E-posta: <Link href="mailto:info@azhoroscope.com" className="text-primary hover:underline dark:text-blue-400">info@azhoroscope.com</Link></li>
           <li>Web: <Link href="/about" className="text-primary hover:underline dark:text-blue-400">Hakkımızda</Link></li>
         </ul>
       </div>
