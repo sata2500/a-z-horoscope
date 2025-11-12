@@ -34,6 +34,9 @@ export default function HomePage() {
               <Button size="lg" variant="outline" asChild>
                 <Link href="/public-horoscope">Ücretsiz Burç Yorumları</Link>
               </Button>
+              <Button size="lg" variant="outline" asChild>
+                <Link href="/public-natal-chart">Doğum Haritası Hesapla</Link>
+              </Button>
             </div>
           </div>
         </div>

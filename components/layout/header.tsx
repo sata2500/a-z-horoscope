@@ -37,6 +37,9 @@ export function Header() {
           <Link href="/public-horoscope" className="text-sm font-medium transition-colors hover:text-primary">
             Burç Yorumları
           </Link>
+          <Link href="/public-natal-chart" className="text-sm font-medium transition-colors hover:text-primary">
+            Doğum Haritası
+          </Link>
           {session && (
             <>
               <Link href="/dashboard" className="text-sm font-medium transition-colors hover:text-primary">
