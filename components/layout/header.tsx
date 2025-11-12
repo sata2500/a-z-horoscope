@@ -13,10 +13,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Sparkles } from "lucide-react"
+import { Sparkles, Menu } from "lucide-react"
+import { useState } from "react"
 
 export function Header() {
   const { data: session } = useSession()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -30,6 +32,7 @@ export function Header() {
           </Link>
         </div>
 
+        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
           <Link href="/" className="text-sm font-medium transition-colors hover:text-primary">
             Ana Sayfa
@@ -45,9 +48,6 @@ export function Header() {
               <Link href="/dashboard" className="text-sm font-medium transition-colors hover:text-primary">
                 Dashboard
               </Link>
-              <Link href="/horoscope" className="text-sm font-medium transition-colors hover:text-primary">
-                Burç Yorumları
-              </Link>
               <Link href="/zodiac" className="text-sm font-medium transition-colors hover:text-primary">
                 Burçlar
               </Link>
@@ -61,7 +61,21 @@ export function Header() {
           )}
         </nav>
 
-        <div className="flex items-center gap-4">
+        {/* Mobile Menu Button */}
+        <div className="flex md:hidden items-center gap-2">
+          <ThemeToggle />
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden"
+          >
+            <Menu className="size-5" />
+          </Button>
+        </div>
+
+        {/* Desktop Actions */}
+        <div className="hidden md:flex items-center gap-4">
           <ThemeToggle />
           
           {session ? (
@@ -106,6 +120,89 @@ export function Header() {
           )}
         </div>
       </div>
+
+      {/* Mobile Navigation Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-t border-border/40 bg-background/95 backdrop-blur">
+          <nav className="container py-4 flex flex-col gap-3">
+            <Link 
+              href="/" 
+              className="text-sm font-medium transition-colors hover:text-primary py-2"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Ana Sayfa
+            </Link>
+            <Link 
+              href="/public-horoscope" 
+              className="text-sm font-medium transition-colors hover:text-primary py-2"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Burç Yorumları
+            </Link>
+            <Link 
+              href="/public-natal-chart" 
+              className="text-sm font-medium transition-colors hover:text-primary py-2"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Doğum Haritası
+            </Link>
+            {session && (
+              <>
+                <div className="border-t border-border/40 my-2" />
+                <Link 
+                  href="/dashboard" 
+                  className="text-sm font-medium transition-colors hover:text-primary py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Dashboard
+                </Link>
+                <Link 
+                  href="/zodiac" 
+                  className="text-sm font-medium transition-colors hover:text-primary py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Burçlar
+                </Link>
+                <Link 
+                  href="/natal-chart" 
+                  className="text-sm font-medium transition-colors hover:text-primary py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Doğum Haritam
+                </Link>
+                <Link 
+                  href="/journal" 
+                  className="text-sm font-medium transition-colors hover:text-primary py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Günlüğüm
+                </Link>
+                <div className="border-t border-border/40 my-2" />
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={() => {
+                    setMobileMenuOpen(false)
+                    signOut({ callbackUrl: "/" })
+                  }}
+                >
+                  Çıkış Yap
+                </Button>
+              </>
+            )}
+            {!session && (
+              <>
+                <div className="border-t border-border/40 my-2" />
+                <Button asChild className="w-full">
+                  <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
+                    Giriş Yap
+                  </Link>
+                </Button>
+              </>
+            )}
+          </nav>
+        </div>
+      )}
     </header>
   )
 }

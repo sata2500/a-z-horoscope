@@ -1,9 +1,12 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Sparkles, Stars, Heart, TrendingUp } from "lucide-react"
+import { Sparkles, Stars, Heart, TrendingUp, Calendar, BookOpen, Zap } from "lucide-react"
+import { auth } from "@/auth"
 
-export default function HomePage() {
+export default async function HomePage() {
+  const session = await auth()
+
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
@@ -21,22 +24,41 @@ export default function HomePage() {
               Yapay Zeka ile Buluştu
             </h1>
             <p className="mb-8 text-lg text-muted-foreground md:text-xl">
-              Gemini AI destekli kişiselleştirilmiş burç yorumları ve analizleri ile geleceğinizi keşfedin.
+              Gemini AI destekli kişiselleştirilmiş burç yorumları ve Swiss Ephemeris ile gerçek astronomik verilere dayalı analizler. 
               Modern teknoloji ile kadim bilgeliği birleştiren Az-Horoscope&apos;a hoş geldiniz.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <Button size="lg" asChild>
-                <Link href="/login">
-                  <Sparkles className="mr-2 size-5" />
-                  Hemen Başla
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline" asChild>
-                <Link href="/public-horoscope">Ücretsiz Burç Yorumları</Link>
-              </Button>
-              <Button size="lg" variant="outline" asChild>
-                <Link href="/public-natal-chart">Doğum Haritası Hesapla</Link>
-              </Button>
+              {!session ? (
+                <>
+                  <Button size="lg" asChild>
+                    <Link href="/login">
+                      <Sparkles className="mr-2 size-5" />
+                      Hemen Başla
+                    </Link>
+                  </Button>
+                  <Button size="lg" variant="outline" asChild>
+                    <Link href="/public-horoscope">Ücretsiz Burç Yorumları</Link>
+                  </Button>
+                  <Button size="lg" variant="outline" asChild>
+                    <Link href="/public-natal-chart">Doğum Haritası Hesapla</Link>
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button size="lg" asChild>
+                    <Link href="/dashboard">
+                      <TrendingUp className="mr-2 size-5" />
+                      Dashboard&apos;a Git
+                    </Link>
+                  </Button>
+                  <Button size="lg" variant="outline" asChild>
+                    <Link href="/public-horoscope">Burç Yorumları</Link>
+                  </Button>
+                  <Button size="lg" variant="outline" asChild>
+                    <Link href="/natal-chart">Doğum Haritam</Link>
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -57,79 +79,80 @@ export default function HomePage() {
               Neden Az-Horoscope?
             </h2>
             <p className="text-lg text-muted-foreground">
-              Modern teknoloji ve astrolojinin mükemmel birleşimi
+              Modern teknoloji ve astrolojinin mükemmel birleşimi ile size özel deneyim
             </p>
           </div>
 
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            <Card className="border-primary/20 transition-all hover:shadow-lg">
+            <Card className="border-primary/20 transition-all hover:shadow-lg hover:border-primary/40">
               <CardHeader>
                 <div className="mb-4 flex size-12 items-center justify-center rounded-lg bg-primary/10">
                   <Sparkles className="size-6 text-primary" />
                 </div>
                 <CardTitle>Yapay Zeka Destekli</CardTitle>
                 <CardDescription>
-                  Google Gemini AI ile kişiselleştirilmiş, detaylı ve güncel burç yorumları
+                  Google Gemini AI ile kişiselleştirilmiş, detaylı ve güncel burç yorumları. 
+                  Her yorum size özel olarak hazırlanır.
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="border-primary/20 transition-all hover:shadow-lg">
+            <Card className="border-primary/20 transition-all hover:shadow-lg hover:border-primary/40">
               <CardHeader>
                 <div className="mb-4 flex size-12 items-center justify-center rounded-lg bg-primary/10">
                   <Stars className="size-6 text-primary" />
                 </div>
-                <CardTitle>Günlük Yorumlar</CardTitle>
+                <CardTitle>Swiss Ephemeris</CardTitle>
                 <CardDescription>
-                  Her gün yeni, özgün ve size özel hazırlanmış burç yorumları
+                  Gerçek astronomik veriler ve gezegen pozisyonları ile profesyonel doğum haritası analizleri
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="border-primary/20 transition-all hover:shadow-lg">
+            <Card className="border-primary/20 transition-all hover:shadow-lg hover:border-primary/40">
+              <CardHeader>
+                <div className="mb-4 flex size-12 items-center justify-center rounded-lg bg-primary/10">
+                  <Calendar className="size-6 text-primary" />
+                </div>
+                <CardTitle>Günlük, Haftalık, Aylık</CardTitle>
+                <CardDescription>
+                  Her gün yeni, özgün ve size özel hazırlanmış burç yorumları ile geleceğinizi planlayın
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="border-primary/20 transition-all hover:shadow-lg hover:border-primary/40">
               <CardHeader>
                 <div className="mb-4 flex size-12 items-center justify-center rounded-lg bg-primary/10">
                   <Heart className="size-6 text-primary" />
                 </div>
                 <CardTitle>Uyumluluk Analizi</CardTitle>
                 <CardDescription>
-                  Burçlar arası uyumluluk analizi ile ilişkilerinizi keşfedin
+                  Burçlar arası uyumluluk analizi ile ilişkilerinizi keşfedin ve anlamlandırın
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="border-primary/20 transition-all hover:shadow-lg">
+            <Card className="border-primary/20 transition-all hover:shadow-lg hover:border-primary/40">
               <CardHeader>
                 <div className="mb-4 flex size-12 items-center justify-center rounded-lg bg-primary/10">
-                  <TrendingUp className="size-6 text-primary" />
+                  <BookOpen className="size-6 text-primary" />
                 </div>
-                <CardTitle>Kişisel Dashboard</CardTitle>
+                <CardTitle>Kişisel Günlük</CardTitle>
                 <CardDescription>
-                  Tüm yorumlarınızı ve analizlerinizi tek bir yerde takip edin
+                  Ruh halinizi takip edin, gezegen geçişleri ile korelasyonları keşfedin
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="border-primary/20 transition-all hover:shadow-lg">
+            <Card className="border-primary/20 transition-all hover:shadow-lg hover:border-primary/40">
               <CardHeader>
                 <div className="mb-4 flex size-12 items-center justify-center rounded-lg bg-primary/10">
-                  <Sparkles className="size-6 text-primary" />
+                  <Zap className="size-6 text-primary" />
                 </div>
-                <CardTitle>Modern Tasarım</CardTitle>
+                <CardTitle>Modern ve Hızlı</CardTitle>
                 <CardDescription>
-                  Kullanıcı dostu, responsive ve dark mode destekli arayüz
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="border-primary/20 transition-all hover:shadow-lg">
-              <CardHeader>
-                <div className="mb-4 flex size-12 items-center justify-center rounded-lg bg-primary/10">
-                  <Stars className="size-6 text-primary" />
-                </div>
-                <CardTitle>Güvenli ve Hızlı</CardTitle>
-                <CardDescription>
-                  Google OAuth ile güvenli giriş, hızlı ve stabil performans
+                  Kullanıcı dostu, responsive, dark mode destekli arayüz ve Google OAuth ile güvenli giriş
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -137,22 +160,92 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Stats Section - Only for logged in users */}
+      {session && (
+        <section className="bg-gradient-to-b from-background to-primary/5 py-16">
+          <div className="container">
+            <div className="grid gap-8 md:grid-cols-3">
+              <Card className="text-center border-primary/20">
+                <CardHeader>
+                  <div className="mx-auto mb-2 flex size-16 items-center justify-center rounded-full bg-primary/10">
+                    <Sparkles className="size-8 text-primary" />
+                  </div>
+                  <CardTitle className="text-3xl font-bold">Kişisel</CardTitle>
+                  <CardDescription>
+                    Size özel burç yorumları ve analizler
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+              <Card className="text-center border-primary/20">
+                <CardHeader>
+                  <div className="mx-auto mb-2 flex size-16 items-center justify-center rounded-full bg-primary/10">
+                    <TrendingUp className="size-8 text-primary" />
+                  </div>
+                  <CardTitle className="text-3xl font-bold">Dashboard</CardTitle>
+                  <CardDescription>
+                    Tüm yorumlarınızı tek bir yerde takip edin
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+              <Card className="text-center border-primary/20">
+                <CardHeader>
+                  <div className="mx-auto mb-2 flex size-16 items-center justify-center rounded-full bg-primary/10">
+                    <BookOpen className="size-8 text-primary" />
+                  </div>
+                  <CardTitle className="text-3xl font-bold">Günlük</CardTitle>
+                  <CardDescription>
+                    Ruh halinizi kaydedin, gezegen etkilerini görün
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* CTA Section */}
       <section className="bg-gradient-to-b from-background to-primary/10 py-20">
         <div className="container">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
-              Yolculuğunuza Bugün Başlayın
+              {!session ? "Yolculuğunuza Bugün Başlayın" : "Keşfetmeye Devam Edin"}
             </h2>
             <p className="mb-8 text-lg text-muted-foreground">
-              Ücretsiz hesap oluşturun ve kişiselleştirilmiş burç yorumlarınıza hemen erişin.
+              {!session 
+                ? "Ücretsiz hesap oluşturun ve kişiselleştirilmiş burç yorumlarınıza hemen erişin."
+                : "Dashboard'unuzda yeni yorumlarınızı keşfedin ve günlüğünüzü tutmaya devam edin."
+              }
             </p>
-            <Button size="lg" asChild>
-              <Link href="/login">
-                <Sparkles className="mr-2 size-5" />
-                Ücretsiz Başla
-              </Link>
-            </Button>
+            {!session ? (
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button size="lg" asChild>
+                  <Link href="/login">
+                    <Sparkles className="mr-2 size-5" />
+                    Ücretsiz Başla
+                  </Link>
+                </Button>
+                <Button size="lg" variant="outline" asChild>
+                  <Link href="/public-horoscope">
+                    Önce İncele
+                  </Link>
+                </Button>
+              </div>
+            ) : (
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button size="lg" asChild>
+                  <Link href="/dashboard">
+                    <TrendingUp className="mr-2 size-5" />
+                    Dashboard
+                  </Link>
+                </Button>
+                <Button size="lg" variant="outline" asChild>
+                  <Link href="/journal">
+                    <BookOpen className="mr-2 size-5" />
+                    Günlüğüm
+                  </Link>
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </section>
