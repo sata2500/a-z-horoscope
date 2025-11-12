@@ -51,9 +51,6 @@ export function Header() {
               <Link href="/zodiac" className="text-sm font-medium transition-colors hover:text-primary">
                 Burçlar
               </Link>
-              <Link href="/natal-chart" className="text-sm font-medium transition-colors hover:text-primary">
-                Doğum Haritam
-              </Link>
               <Link href="/journal" className="text-sm font-medium transition-colors hover:text-primary">
                 Günlüğüm
               </Link>
@@ -103,6 +100,9 @@ export function Header() {
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/dashboard">Dashboard</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/natal-chart">Doğum Haritam</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/journal">Günlüğüm</Link>
@@ -162,13 +162,6 @@ export function Header() {
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Burçlar
-                </Link>
-                <Link 
-                  href="/natal-chart" 
-                  className="text-sm font-medium transition-colors hover:text-primary py-2"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Doğum Haritam
                 </Link>
                 <Link 
                   href="/journal" 

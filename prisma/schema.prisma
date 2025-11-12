@@ -54,6 +54,12 @@ model User {
   emailVerified DateTime? @map("email_verified")
   image         String?
   birthDate               DateTime? @map("birth_date")
+  birthTime               String?   @map("birth_time")
+  birthPlace              String?   @map("birth_place")
+  birthLatitude           Float?    @map("birth_latitude")
+  birthLongitude          Float?    @map("birth_longitude")
+  natalChartData          Json?     @map("natal_chart_data")
+  natalChartCalculatedAt  DateTime? @map("natal_chart_calculated_at")
   zodiacSign              String?   @map("zodiac_sign")
   emailNotifications      Boolean   @default(false) @map("email_notifications")
   notificationPreferences Json?     @default("{\"daily\": true, \"weekly\": false, \"monthly\": false}") @map("notification_preferences")
