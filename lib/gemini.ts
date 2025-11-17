@@ -80,7 +80,7 @@ export async function generateDailyHoroscope(
   zodiacSign: string,
   zodiacInfo: { nameTr: string; elementTr: string; planetTr: string }
 ): Promise<string> {
-  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" })
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" })
 
   // Bugünkü gerçek gezegen pozisyonlarını al
   const todayTransits = calculateTransits(new Date())
@@ -144,7 +144,7 @@ export async function generateCompatibilityAnalysis(
   info1: { nameTr: string; elementTr: string },
   info2: { nameTr: string; elementTr: string }
 ): Promise<string> {
-  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" })
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" })
 
   const prompt = `Sen profesyonel bir astrolog ve ilişki danışmanısın. ${info1.nameTr} ve ${info2.nameTr} burçları arasındaki uyumluluğu analiz et.
 
@@ -245,7 +245,7 @@ export async function generateMonthlyHoroscope(
   zodiacSign: string,
   zodiacInfo: { nameTr: string; elementTr: string; planetTr: string }
 ): Promise<string> {
-  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" })
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" })
 
   const currentMonth = new Date().toLocaleDateString('tr-TR', { month: 'long', year: 'numeric' })
   
@@ -320,7 +320,7 @@ export async function analyzeJournalEntry(
   transitInsights: string
   suggestions: string[]
 }> {
-  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" })
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" })
 
   const transitsText = transits 
     ? Object.entries(transits).map(([planet, position]) => `${planet}: ${position}`).join(', ')
@@ -385,7 +385,7 @@ export async function findJournalPatterns(
   insights: string[]
   recommendations: string[]
 }> {
-  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" })
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" })
 
   // Günlükleri özetle
   const entriesSummary = entries.map((entry, index) => {
