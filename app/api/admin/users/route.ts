@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/auth';
 import { prisma } from '@/lib/db';
+import { handleError } from '@/lib/errorHandler';
+import { getCurrentAdmin } from '@/lib/authUtils';
 
 /**
  * GET /api/admin/users
@@ -8,13 +9,9 @@ import { prisma } from '@/lib/db';
  */
 export async function GET(req: NextRequest) {
   try {
-    const session = await auth();
-    
-    if (!session || session.user.role !== 'ADMIN') {
-      return NextResponse.json(
-        { error: 'Yetkisiz erişim' },
-        { status: 401 }
-      );
+    const admin = await getCurrentAdmin();
+    if (admin instanceof NextResponse) {
+      return admin;
     }
 
     const { searchParams } = new URL(req.url);
@@ -72,10 +69,6 @@ export async function GET(req: NextRequest) {
       },
     });
   } catch (error) {
-    console.error('Admin users list error:', error);
-    return NextResponse.json(
-      { error: 'Kullanıcılar listelenirken bir hata oluştu' },
-      { status: 500 }
-    );
+    return handleError(error);
   }
 }

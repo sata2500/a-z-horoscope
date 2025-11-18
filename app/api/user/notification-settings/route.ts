@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/auth';
-import { prisma } from '@/lib/db';
-import { z } from 'zod';
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/db";
+import { z } from "zod";
+import { handleError } from "@/lib/errorHandler";
+import { getCurrentUser } from "@/lib/authUtils";
 
 // Bildirim tercihleri şeması
 const notificationSchema = z.object({
@@ -19,12 +20,15 @@ const notificationSchema = z.object({
  */
 export async function POST(req: NextRequest) {
   try {
-    const session = await auth();
+    const user = await getCurrentUser();
+    if (user instanceof NextResponse) {
+      return user;
+    }
     
-    if (!session?.user?.email) {
+    if (!user.email) {
       return NextResponse.json(
-        { error: 'Giriş yapmanız gerekiyor' },
-        { status: 401 }
+        { error: "Email not found" },
+        { status: 400 }
       );
     }
 
@@ -32,8 +36,8 @@ export async function POST(req: NextRequest) {
     const validated = notificationSchema.parse(body);
 
     // Kullanıcıyı güncelle
-    const user = await prisma.user.update({
-      where: { email: session.user.email },
+    const updatedUser = await prisma.user.update({
+      where: { email: user.email },
       data: {
         emailNotifications: validated.emailNotifications,
         notificationPreferences: validated.preferences,
@@ -47,23 +51,12 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: 'Bildirim tercihleri güncellendi',
-      emailNotifications: user.emailNotifications,
-      preferences: user.notificationPreferences,
+      message: "Bildirim tercihleri güncellendi",
+      emailNotifications: updatedUser.emailNotifications,
+      preferences: updatedUser.notificationPreferences,
     });
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: 'Geçersiz veri formatı', details: error.issues },
-        { status: 400 }
-      );
-    }
-
-    console.error('Bildirim ayarları güncelleme hatası:', error);
-    return NextResponse.json(
-      { error: 'Bildirim tercihleri güncellenirken bir hata oluştu' },
-      { status: 500 }
-    );
+    return handleError(error);
   }
 }
 
@@ -73,26 +66,28 @@ export async function POST(req: NextRequest) {
  */
 export async function GET() {
   try {
-    const session = await auth();
+    const user = await getCurrentUser();
+    if (user instanceof NextResponse) {
+      return user;
+    }
     
-    if (!session?.user?.email) {
+    if (!user.email) {
       return NextResponse.json(
-        { error: 'Giriş yapmanız gerekiyor' },
-        { status: 401 }
+        { error: "Email not found" },
+        { status: 400 }
       );
     }
-
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
+    const dbUser = await prisma.user.findUnique({
+      where: { email: user.email },
       select: {
         emailNotifications: true,
         notificationPreferences: true,
       },
     });
 
-    if (!user) {
+    if (!dbUser) {
       return NextResponse.json(
-        { error: 'Kullanıcı bulunamadı' },
+        { error: "Kullanıcı bulunamadı" },
         { status: 404 }
       );
     }
@@ -106,14 +101,10 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      emailNotifications: user.emailNotifications ?? false,
-      preferences: user.notificationPreferences ?? defaultPreferences,
+      emailNotifications: dbUser.emailNotifications ?? false,
+      preferences: dbUser.notificationPreferences ?? defaultPreferences,
     });
   } catch (error) {
-    console.error('Bildirim ayarları getirme hatası:', error);
-    return NextResponse.json(
-      { error: 'Bildirim tercihleri getirilirken bir hata oluştu' },
-      { status: 500 }
-    );
+    return handleError(error);
   }
 }
