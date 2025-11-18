@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { db } from "@/lib/db"
 import { calculateTransits } from "@/lib/swisseph"
-import { rateLimit } from "@/lib/rate-limit"
 import { validateRequestBody, journalEntrySchema } from "@/lib/validations"
+import { sanitize } from "@/lib/sanitize"
 
 // POST /api/journal - Yeni günlük oluşturma
 export async function POST(req: NextRequest) {
@@ -17,19 +17,6 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Rate limiting
-    const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1"
-    const rateLimitResult = rateLimit(ip, {
-      interval: 60000, // 1 minute
-      maxRequests: 10,
-    })
-
-    if (!rateLimitResult) {
-      return NextResponse.json(
-        { error: "Çok fazla istek. Lütfen daha sonra tekrar deneyin." },
-        { status: 429 }
-      )
-    }
 
     // Validation
     const validation = await validateRequestBody(req.clone(), journalEntrySchema)
@@ -70,14 +57,16 @@ export async function POST(req: NextRequest) {
       // Transit hesaplanamasa bile günlük kaydedilsin
     }
 
+    const sanitizedData = sanitize({ title, content, tags });
+
     // Günlük oluştur
     const entry = await db.journalEntry.create({
       data: {
         userId: session.user.id,
-        title: title || null,
-        content: content.trim(),
+        title: sanitizedData.title || null,
+        content: sanitizedData.content.trim(),
         mood,
-        tags: tags || [],
+        tags: sanitizedData.tags || [],
         date: entryDate,
         transits: transits || undefined,
       },
