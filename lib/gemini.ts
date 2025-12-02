@@ -175,7 +175,7 @@ export async function generateWeeklyHoroscope(
   zodiacSign: string,
   zodiacInfo: { nameTr: string; elementTr: string; planetTr: string }
 ): Promise<string> {
-  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" })
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" })
 
   // Bu haftanın başındaki gezegen pozisyonları
   const todayTransits = calculateTransits(new Date())
